@@ -16,42 +16,42 @@
   "env": {
     "API_ID": {
       "description": "Get this value from https://my.telegram.org",
-      "value": "22317880",
+      "value": "29533034",
       "required": true
     },
     "API_HASH": {
       "description": "Get this value from https://my.telegram.org",
-      "value": "5e341628f7176989bcffb2b8fc22445f",
+      "value": "e2aa5fe8e0188aee36037d5685e9e8b4",
       "required": true
     },
     "BOT_TOKEN": {
       "description": "A Bot's token from Botfather",
-      "value": "7913305235:AAG_ee32FXN5yqwAH74zcUdq-XUnefGP_H4",
+      "value": "8182440075:AAGIFAKZzwGEMEGrhxoVSJXlXYqAnStdpH0",
       "required": true
     },
     "MONGO_DB_URI": {
       "description": "Get a mongodb url from https://cloud.mongodb.com.",
-      "value": "mongodb+srv://musicbotxd:musicbotxd@cluster0.6thyk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+      "value": "mongodb+srv://TEAMBABY01:UTTAMRATHORE09@cluster0.vmjl9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
       "required": true
     },
     "OWNER_ID": {
       "description": "The user id of user whom you would like to add as OWNER.from @Sophia_x_MusicBot on Telegram.",
-      "value": "6018803920",
+      "value": "6138142369",
       "required": true
     },
    "SUPPORT_CHANNEL": {
       "description": "Add channel link",
-      "value": "https://t.me/MBT_UPDATES",
+      "value": "https://t.me/MidexozBotUpdates",
       "required": true
     },
       "SUPPORT_CHAT": {
       "description": "Add Chat group & support group Link",
-      "value": "https://t.me/+EK-lvu4shmBkNmZl",
+      "value": "https://t.me/Midexoz",
       "required": true
     },
     "STRING_SESSION": {
       "description": "A Pyrogram String Session from @Sessoin_String_gen_BOT on Telegram.",
-      "value": "BAFUizgAC0CS3g8afPxNuJ5piWUx02kh_gxZkiEbUCsUsEhzOFOTW4QBYyR6CXnVrODf7WGnGRVT1lizhk4rzhyU5yp950DDhvbqLHosQDIDD8zPJ3hwsfC3Fn2LJ9hBaNtoGCn-heoi9CB-3sgqCUjAZ81M8EviClyy6TV-NRPM6QcdwVlzu2x6O-wmHxNhMAbwaApJxnoVlpIoKEq6vzKWW1-Nr1KeVtivV5gtglIRMjGkd-pkYbsMBHhppFWiAuBEtWvjVqzIZO4RX-2bhm1oG5KYdKDhZQujDRn5Ki0xu5Q1jMW8znESnQhZACMCrHo0OX5dZQqxyl16-VRBLivIGIob5gAAAAGXpY4PAA",
+      "value": "BQHCo2oAt6F-mfjiJ6l5HjMyYxANEqSMBAkqcOzqffg_h-cNpOPZUCL6nNVmLuIYSGwZ2IJ0ivhdJsssYwjh1ipMK9JMDjhHs5oyhoDOJhEs3jEdaV7Y6Ignw-uEYebpIUn6PQrEGHgzGEBqPMWJa6fnkX1Ut34ivZu4wuD78cmhpl0Yo1cZcRDgwgRzhxH2AuZwbdHjNT6F926mTtl4ekUHcopnf17AkwQV-vcQwv9gR3OwaG-gIEeapsgDAhLORRakO4NGB9NvDzSqMyNq1iIlZfJelAf1nFRViB3roex_tQ3S2RUNaA8_8iK5pmdNaK6DtH7XUkxWFORQjVHGO08FDo9H4gAAAAHGoxL-AA",
       "required": true
     },
     "HEROKU_API_KEY": {
