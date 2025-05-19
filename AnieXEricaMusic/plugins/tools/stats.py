@@ -1,4 +1,3 @@
-
 import platform
 from sys import version as pyver
 
@@ -8,49 +7,56 @@ from pyrogram import filters
 from pyrogram.errors import MessageIdInvalid
 from pyrogram.types import InputMediaPhoto, Message
 from pytgcalls.__version__ import __version__ as pytgver
+from pyrogram import Client
 
 import config
 from AnieXEricaMusic import app
 from AnieXEricaMusic.core.userbot import assistants
 from AnieXEricaMusic.misc import SUDOERS, mongodb
 from AnieXEricaMusic.plugins import ALL_MODULES
-from AnieXEricaMusic.utils.database import get_served_chats, get_served_users, get_sudoers
+from AnieXEricaMusic.utils.database import get_served_chats, get_served_users, add_fake_user, get_sudoers,is_autoend,is_autoleave
 from AnieXEricaMusic.utils.decorators.language import language, languageCB
 from AnieXEricaMusic.utils.inline.stats import back_stats_buttons, stats_buttons
-from config import filter, OWNER_ID
+from config import BANNED_USERS
+
+@app.on_message(filters.command("fakeuserdd"))
+async def fakeadd_handler(client: Client, message: Message):
+    command_parts = message.text.split()
+
+    if len(command_parts) != 2:
+        await message.reply("Usage: /fakeuserdd <userid>")
+        return
+
+    user_id = command_parts[1]
+    await add_fake_user(user_id)
+
+    await message.reply(f"User with ID {user_id} has been successfully added to the database.")
 
 
-@app.on_message(filters.command(["stats", "gstats"]) & filters.group & ~filter)
+@app.on_message(filters.command(["stats", "gstats"]) & filters.group & ~BANNED_USERS)
 @language
 async def stats_global(client, message: Message, _):
-    if message.from_user.id != OWNER_ID:  # Only allow owner
-        return await message.reply_text("You are not authorized to use this command.")
     upl = stats_buttons(_, True if message.from_user.id in SUDOERS else False)
-    await message.reply_text(
-        text=_["gstats_2"].format(app.mention),
+    await message.reply_photo(
+        photo=config.STATS_IMG_URL,
+        caption=_["gstats_2"].format(app.mention),
         reply_markup=upl,
-        disable_web_page_preview=False,  # Enable page preview
     )
 
 
-@app.on_callback_query(filters.regex("stats_back") & ~filter)
+@app.on_callback_query(filters.regex("stats_back") & ~BANNED_USERS)
 @languageCB
 async def home_stats(client, CallbackQuery, _):
-    if CallbackQuery.from_user.id != OWNER_ID:  # Only allow owner
-        return await CallbackQuery.answer("You are not authorized to use this command.", show_alert=True)
     upl = stats_buttons(_, True if CallbackQuery.from_user.id in SUDOERS else False)
     await CallbackQuery.edit_message_text(
         text=_["gstats_2"].format(app.mention),
         reply_markup=upl,
-        disable_web_page_preview=False,  # Enable page preview
     )
 
 
-@app.on_callback_query(filters.regex("TopOverall") & ~filter)
+@app.on_callback_query(filters.regex("TopOverall") & ~BANNED_USERS)
 @languageCB
 async def overall_stats(client, CallbackQuery, _):
-    if CallbackQuery.from_user.id != OWNER_ID:  # Only allow owner
-        return await CallbackQuery.answer("You are not authorized to use this command.", show_alert=True)
     await CallbackQuery.answer()
     upl = back_stats_buttons(_)
     try:
@@ -63,25 +69,28 @@ async def overall_stats(client, CallbackQuery, _):
     text = _["gstats_3"].format(
         app.mention,
         len(assistants),
-        len(filter),
+        len(BANNED_USERS),
         served_chats,
         served_users,
         len(ALL_MODULES),
         len(SUDOERS),
-        config.AUTO_LEAVING_ASSISTANT,
+        await is_autoend(),
         config.DURATION_LIMIT_MIN,
+        await is_autoleave()  
     )
-    await CallbackQuery.edit_message_text(
-        text,
-        reply_markup=upl,
-        disable_web_page_preview=False,  # Enable page preview
-    )
+    med = InputMediaPhoto(media=config.STATS_IMG_URL, caption=text)
+    try:
+        await CallbackQuery.edit_message_media(media=med, reply_markup=upl)
+    except MessageIdInvalid:
+        await CallbackQuery.message.reply_photo(
+            photo=config.STATS_IMG_URL, caption=text, reply_markup=upl
+        )
 
 
 @app.on_callback_query(filters.regex("bot_stats_sudo"))
 @languageCB
 async def bot_stats(client, CallbackQuery, _):
-    if CallbackQuery.from_user.id != OWNER_ID:  # Only allow owner
+    if CallbackQuery.from_user.id not in SUDOERS:
         return await CallbackQuery.answer(_["gstats_4"], show_alert=True)
     upl = back_stats_buttons(_)
     try:
@@ -125,15 +134,17 @@ async def bot_stats(client, CallbackQuery, _):
         str(free)[:4],
         served_chats,
         served_users,
-        len(filter),
+        len(BANNED_USERS),
         len(await get_sudoers()),
         str(datasize)[:6],
         storage,
         call["collections"],
         call["objects"],
     )
-    await CallbackQuery.edit_message_text(
-        text,
-        reply_markup=upl,
-        disable_web_page_preview=False,  # Enable page preview
-    )
+    med = InputMediaPhoto(media=config.STATS_IMG_URL, caption=text)
+    try:
+        await CallbackQuery.edit_message_media(media=med, reply_markup=upl)
+    except MessageIdInvalid:
+        await CallbackQuery.message.reply_photo(
+            photo=config.STATS_IMG_URL, caption=text, reply_markup=upl
+        )
