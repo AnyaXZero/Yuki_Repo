@@ -16,42 +16,42 @@
   "env": {
     "API_ID": {
       "description": "Get this value from https://my.telegram.org",
-      "value": "29533034",
+      "value": "25955854",
       "required": true
     },
     "API_HASH": {
       "description": "Get this value from https://my.telegram.org",
-      "value": "e2aa5fe8e0188aee36037d5685e9e8b4",
+      "value": "2ede59823a90cb31442a74f5ae01f675",
       "required": true
     },
     "BOT_TOKEN": {
       "description": "A Bot's token from Botfather",
-      "value": "8182440075:AAGIFAKZzwGEMEGrhxoVSJXlXYqAnStdpH0",
+      "value": "7979900579:AAFqBNSz_nOxXtyDcObsI8kUS56jMSdxrio",
       "required": true
     },
     "MONGO_DB_URI": {
       "description": "Get a mongodb url from https://cloud.mongodb.com.",
-      "value": "mongodb+srv://TEAMBABY01:UTTAMRATHORE09@cluster0.vmjl9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+      "value": "mongodb+srv://shigarakisan:demnkin@cluster0.cxt4iov.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
       "required": true
     },
     "OWNER_ID": {
       "description": "The user id of user whom you would like to add as OWNER.from @Sophia_x_MusicBot on Telegram.",
-      "value": "6138142369",
+      "value": "6018803920",
       "required": true
     },
    "SUPPORT_CHANNEL": {
       "description": "Add channel link",
-      "value": "https://t.me/MidexozBotUpdates",
+      "value": "https://t.me/MBT_UPDATES",
       "required": true
     },
       "SUPPORT_CHAT": {
       "description": "Add Chat group & support group Link",
-      "value": "https://t.me/Midexoz",
+      "value": "https://t.me/+ytk9hkZfGjY3MDRl",
       "required": true
     },
     "STRING_SESSION": {
       "description": "A Pyrogram String Session from @Sessoin_String_gen_BOT on Telegram.",
-      "value": "BQHCo2oAt6F-mfjiJ6l5HjMyYxANEqSMBAkqcOzqffg_h-cNpOPZUCL6nNVmLuIYSGwZ2IJ0ivhdJsssYwjh1ipMK9JMDjhHs5oyhoDOJhEs3jEdaV7Y6Ignw-uEYebpIUn6PQrEGHgzGEBqPMWJa6fnkX1Ut34ivZu4wuD78cmhpl0Yo1cZcRDgwgRzhxH2AuZwbdHjNT6F926mTtl4ekUHcopnf17AkwQV-vcQwv9gR3OwaG-gIEeapsgDAhLORRakO4NGB9NvDzSqMyNq1iIlZfJelAf1nFRViB3roex_tQ3S2RUNaA8_8iK5pmdNaK6DtH7XUkxWFORQjVHGO08FDo9H4gAAAAHGoxL-AA",
+      "value": "BQGMDg4Aa8AuIE8PlTbZY_OF3n5LPXRZRS68HecAY6t3t0dbgxNP9J6A4RhY0ci_n83bMRUGOe1m055koRLl5jmG9xxBodFbVJ9c769xEGmIbJ4p_ErLrEq3WMSsqR2taajwPClfOI4ax2nDjQxOvOVl7UJhnh-K-gT1ow4uVGn5wULyd0JcPXOMtGqdi2A-ABJM6atC25GbVAOvNTKBI0MAz9iRjiQxJXChG8yQpBgjmXjRj237V4Dac4GxwdHeoFLndGsPm3ZkHmbHRRjs2offdZcM_j6Hrw7HYyHMDTF_V2Pf7hVhbpzqesG1STSV7ilsZqq4Yzrvuqj96i_lgYXm0NfHFAAAAAHXGk-qAA",
       "required": true
     },
     "HEROKU_API_KEY": {
@@ -91,7 +91,7 @@
     },
     "STATS_IMG_URL": {
       "description": "Your Bot Stats Time Pic tgm link from @Sophia_x_MusicBot on Telegram.",
-      "value": "https://telegra.ph/file/b37803a767b15e939513d.png",
+      "value": "https://files.catbox.moe/iffmnv.jpg",
       "required": false
     },
     "LOGGER_ID": {
