@@ -19,7 +19,7 @@ async def ping_com(client, message: Message, _):
     user = message.from_user
     user_firstname = f"<a href='tg://user?id={user.id}'>{user.first_name}</a>"
     bot_private_link = f"<a href='tg://user?id={app.me.id}'>.🍂𝆺𝅥𝆬𝐒ʜɪɢ֟ؖᴀʀᴀᴋɪࣷ"
-    lord_firstname = f"<a href='tg://user?id={6018803920}'>S L A Y E R</a>"
+    lord_firstname = f"<a href='tg://user?id={6018803920}'>ㅤ❛ 𝐒𝐥𝛂֟፝ؖ۬֯𝛄𝛆𝐫𓆪 ̣̎͟🪽</a>"
 
     response = await message.reply_photo(
         photo=PING_IMG_URL,
