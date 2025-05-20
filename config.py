@@ -56,7 +56,7 @@ autoclean = []
 confirmer = {}
 
 
-START_IMG_URL =  "https://files.catbox.moe/iffmnv.jpg"
+START_IMG_URL =  "https://i.ibb.co/0yCCwJJd/photo-2025-05-20-02-26-13-7506348604173320220.jpg"
 PLAYLIST_IMG_URL = "https://files.catbox.moe/bggrlh.jpg"
 STATS_IMG_URL = "https://files.catbox.moe/iffmnv.jpg"
 TELEGRAM_AUDIO_URL = "https://files.catbox.moe/f3yuiy.jpg"
