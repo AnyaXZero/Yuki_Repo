@@ -81,7 +81,7 @@
     },
     "START_IMG_URL": {
       "description": "Your Bot Start Time Pic tgm link from @Sophia_x_MusicBot on Telegram.",
-      "value": "https://telegra.ph/file/b37803a767b15e939513d.png",
+      "value": "https://i.ibb.co/0yCCwJJd/photo-2025-05-20-02-26-13-7506348604173320220.jpg",
       "required": false
     },
     "PING_IMG_URL": {
