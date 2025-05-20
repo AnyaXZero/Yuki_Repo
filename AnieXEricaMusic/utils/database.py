@@ -1,6 +1,5 @@
+
 import random
-import asyncio
-from datetime import date
 from typing import Dict, List, Union
 
 from AnieXEricaMusic import userbot
@@ -9,12 +8,10 @@ from AnieXEricaMusic.core.mongo import mongodb
 authdb = mongodb.adminauth
 authuserdb = mongodb.authuser
 autoenddb = mongodb.autoend
-autoleavedb = mongodb.autoleave
 assdb = mongodb.assistants
 blacklist_chatdb = mongodb.blacklistChat
 blockeddb = mongodb.blockedusers
 chatsdb = mongodb.chats
-chatdb = mongodb.chat
 channeldb = mongodb.cplaymode
 countdb = mongodb.upcount
 gbansdb = mongodb.gban
@@ -31,7 +28,6 @@ active = []
 activevideo = []
 assistantdict = {}
 autoend = {}
-autoleave = {}
 count = {}
 channelconnect = {}
 langm = {}
@@ -48,8 +44,6 @@ async def get_assistant_number(chat_id: int) -> str:
     assistant = assistantdict.get(chat_id)
     return assistant
 
-async def add_fake_user(user_id: int):
-    return await usersdb.insert_one({"user_id": user_id})
 
 async def get_client(assistant: int):
     if int(assistant) == 1:
@@ -219,23 +213,6 @@ async def autoend_on():
 async def autoend_off():
     chat_id = 1234
     await autoenddb.delete_one({"chat_id": chat_id})
-
-async def is_autoleave() -> bool:
-    chat_id = 1234
-    user = await autoleavedb.find_one({"chat_id": chat_id})
-    if not user:
-        return False
-    return True
-
-
-async def autoleave_on():
-    chat_id = 1234
-    await autoleavedb.insert_one({"chat_id": chat_id})
-
-
-async def autoleave_off():
-    chat_id = 1234
-    await autoleavedb.delete_one({"chat_id": chat_id})
 
 
 async def get_loop(chat_id: int) -> int:
@@ -477,11 +454,13 @@ async def is_served_user(user_id: int) -> bool:
         return False
     return True
 
+
 async def get_served_users() -> list:
     users_list = []
-    async for user in usersdb.find():  # No filter, fetch all users
+    async for user in usersdb.find({"user_id": {"$gt": 0}}):
         users_list.append(user)
     return users_list
+
 
 async def add_served_user(user_id: int):
     is_served = await is_served_user(user_id)
@@ -489,11 +468,13 @@ async def add_served_user(user_id: int):
         return
     return await usersdb.insert_one({"user_id": user_id})
 
+
 async def get_served_chats() -> list:
     chats_list = []
     async for chat in chatsdb.find({"chat_id": {"$lt": 0}}):
         chats_list.append(chat)
     return chats_list
+
 
 async def is_served_chat(chat_id: int) -> bool:
     chat = await chatsdb.find_one({"chat_id": chat_id})
