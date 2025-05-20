@@ -1,3 +1,4 @@
+
 from datetime import datetime
 from pyrogram.enums import ParseMode
 from pyrogram import filters
@@ -18,7 +19,7 @@ async def ping_com(client, message: Message, _):
     start = datetime.now()
     user = message.from_user
     user_firstname = f"<a href='tg://user?id={user.id}'>{user.first_name}</a>"
-    bot_private_link = f"<a href='tg://user?id={app.me.id}'>.🍂𝆺𝅥𝆬𝐒ʜɪɢ֟ؖᴀʀᴀᴋɪࣷ"
+    bot_private_link = f"<a href='tg://user?id={app.me.id}'>.Shigaraki 𝑴𝒖𝒔𝒊𝒄"
     lord_firstname = f"<a href='tg://user?id={6018803920}'>S L A Y E R</a>"
 
     response = await message.reply_photo(
