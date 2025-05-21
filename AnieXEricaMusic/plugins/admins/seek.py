@@ -1,18 +1,19 @@
+
 from pyrogram import filters
 from pyrogram.types import Message
 
 from AnieXEricaMusic import YouTube, app
-from AnieXEricaMusic.core.call import AMBOT
+from AnieXEricaMusic.core.call import Shigaraki
 from AnieXEricaMusic.misc import db
 from AnieXEricaMusic.utils import AdminRightsCheck, seconds_to_min
 from AnieXEricaMusic.utils.inline import close_markup
-from config import BANNED_USERS
+from config import filter
 
 
 @app.on_message(
     filters.command(["seek", "cseek", "seekback", "cseekback"])
     & filters.group
-    & ~BANNED_USERS
+    & ~filter
 )
 @AdminRightsCheck
 async def seek_comm(cli, message: Message, _, chat_id):
@@ -56,7 +57,7 @@ async def seek_comm(cli, message: Message, _, chat_id):
     if "index_" in file_path:
         file_path = playing[0]["vidid"]
     try:
-        await AMBOT.seek_stream(
+        await Shigaraki.seek_stream(
             chat_id,
             file_path,
             seconds_to_min(to_seek),
