@@ -1,7 +1,7 @@
 
 from pyrogram.types import InlineKeyboardButton
 import config
-from Shigaraki import app
+from AnieXEricaMusic import app
 
 def start_panel(_):
     buttons = [
