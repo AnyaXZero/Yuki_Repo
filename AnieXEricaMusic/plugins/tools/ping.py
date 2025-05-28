@@ -1,65 +1,91 @@
-
 from datetime import datetime
-from pyrogram.enums import ParseMode
 from pyrogram import filters
-from pyrogram.types import Message
-
+from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from AnieXEricaMusic import app
-from AnieXEricaMusic.core.call import AMBOT
+from AnieXEricaMusic.core.call import AnieXEricaMusic as AnieXEricaMusic
 from AnieXEricaMusic.utils import bot_sys_stats
 from AnieXEricaMusic.utils.decorators.language import language
-from AnieXEricaMusic.utils.inline import supp_markup
-from config import BANNED_USERS, PING_IMG_URL
+from config import BANNED_USERS, SUPPORT_CHANNEL, SUPPORT_CHAT
 
-LORD_ID = 6018803920
 
-@app.on_message(filters.command(["ping", "alive"]) & ~BANNED_USERS)
+@app.on_message(filters.command(["ping", "status"]) & ~BANNED_USERS)
 @language
 async def ping_com(client, message: Message, _):
     start = datetime.now()
-    user = message.from_user
-    user_firstname = f"<a href='tg://user?id={user.id}'>{user.first_name}</a>"
-    bot_private_link = f"<a href='tg://user?id={app.me.id}'>.Shigaraki 𝑴𝒖𝒔𝒊𝒄"
-    lord_firstname = f"<a href='tg://user?id={6018803920}'>S L A Y E R</a>"
+    response = await message.reply_text(
+        text=_["ping_1"].format(app.mention),
+    )  # Fixed missing parenthesis here
 
-    response = await message.reply_photo(
-        photo=PING_IMG_URL,
-        caption=_["ping_1"].format(app.mention),
-    )
-
-    pytgping = await AMBOT.ping()
+    pytgping = await AnieXEricaMusic.ping()
     UP, CPU, RAM, DISK = await bot_sys_stats()
     resp = (datetime.now() - start).microseconds / 1000
 
-    if user.id == LORD_ID:
-        ping_2_message = (
-            f"🔱 I'ᴍ ᴀʟɪᴠᴇ ᴍʏ ʟᴏʀᴅ\n\n"
-            f" ➣ ɪ'ᴍ {bot_private_link}\n"
-            f" ➣ ᴄʀᴇᴀᴛᴏʀ ⌯ {lord_firstname}\n"
-            f"┏━━━━━━━━━━━━━⧫\n"
-            f"┠ ➥ Uᴘᴛɪᴍᴇ : {UP}\n"
-            f"┠ ➥ Rᴀᴍ : {RAM}%\n"
-            f"┠ ➥ ᴄᴘᴜ : {CPU}%\n"
-            f"┠ ➥ ᴅɪsᴋ : {DISK}%\n"
-            f"┠ ➥ ᴘʏ - ᴛɢᴄᴀʟʟs : <code>{resp}ᴍs</code>\n"
-            f"┗━━━━━━━━━━━━━━⧫"
-        )
-    else:
-        ping_2_message = (
-            f"ʏᴏᴏ ! {user_firstname}\n\n"
-            f"➣ ɪ'ᴍ {bot_private_link}\n"
-            f"➣ ᴄʀᴇᴀᴛᴏʀ ⌯ {lord_firstname}\n"
-            f"┏━━━━━━━━━━━━━⧫\n"
-            f"┠ ➥ Uᴘᴛɪᴍᴇ : {UP}\n"
-            f"┠ ➥ Rᴀᴍ : {RAM}%\n"
-            f"┠ ➥ ᴄᴘᴜ : {CPU}%\n"
-            f"┠ ➥ ᴅɪsᴋ : {DISK}%\n"
-            f"┠ ➥ ᴘʏ - ᴛɢᴄᴀʟʟs : <code>{resp}ᴍs</code>\n"
-            f"┗━━━━━━━━━━━━━━⧫"
-        )
-
     await response.edit_text(
-        ping_2_message.format(UP, RAM, CPU, DISK, resp, pytgping),
-        parse_mode=ParseMode.HTML,
-        reply_markup=supp_markup(_),
+        _["ping_2"].format(resp, app.mention, UP, RAM, CPU, DISK, pytgping),
+        reply_markup=InlineKeyboardMarkup([
+            [
+                InlineKeyboardButton(text="ᴜᴘᴅᴀᴛᴇs", url=SUPPORT_CHANNEL),
+                InlineKeyboardButton(text="sᴜᴘᴘᴏʀᴛ", url=SUPPORT_CHAT),
+            ],
+            [
+                InlineKeyboardButton(text="ᴀᴅᴅ ɪɴ ɢʀᴏᴜᴘ", url=f"https://t.me/{app.username}?startgroup=true"),
+            ],
+        ])
     )
+
+
+
+
+
+
+import asyncio
+from pyrogram import filters
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
+from config import OWNER_ID
+from AnieXEricaMusic import app
+import config 
+
+@app.on_message(filters.command("alive"))
+async def awake(_, message: Message):
+    loading_1 = await message.reply_text("💖")
+    await asyncio.sleep(0.5)
+
+    loading_texts = [
+        "<b>ʟᴏᴀᴅɪɴɢ</b>",
+        "<b>ʟᴏᴀᴅɪɴɢ.</b>",
+        "<b>ʟᴏᴀᴅɪɴɢ..</b>",
+        "<b>ʟᴏᴀᴅɪɴɢ...</b>"
+    ]
+
+    for text in loading_texts:
+        await loading_1.edit_text(text)
+        await asyncio.sleep(1)  
+    
+    await loading_1.delete()
+
+    owner = await app.get_users(OWNER_ID)
+    
+    if message.from_user.id == OWNER_ID:
+        TEXT = "ɪ'ᴍ ᴀʟɪᴠᴇ ᴍʏ ʟᴏʀᴅ <a href='https://files.catbox.moe/iffmnv.jpg' target='_blank'>⚡</a> !\n\n"
+    else:
+        TEXT = f"ʏᴏᴏ {message.from_user.mention}, <a href='https://files.catbox.moe/iffmnv.jpg' target='_blank'>⚡</a>\n\nɪ'ᴍ {app.mention}\n──────────────────\n"
+    
+    TEXT += f"ᴄʀᴇᴀᴛᴏʀ ⌯ {owner.mention}\n"
+    TEXT += f"ᴠᴇʀsɪᴏɴ ⌯ 𝟸.𝟷𝟼 ʀx\n"
+    TEXT += f"ᴘʏᴛʜᴏɴ ᴠᴇʀsɪᴏɴ ⌯ 𝟹.𝟷𝟸.𝟶\n"
+    TEXT += f"ᴘʏʀᴏɢʀᴀᴍ ᴠᴇʀsɪᴏɴ ⌯ 𝟸.𝟶.𝟷𝟶𝟼"
+    
+    BUTTON = [
+    [
+        InlineKeyboardButton(text="ᴜᴘᴅᴀᴛᴇs", url=config.SUPPORT_CHANNEL),
+        InlineKeyboardButton(text="sᴜᴘᴘᴏʀᴛ", url=config.SUPPORT_CHAT),
+    ],
+    [
+        InlineKeyboardButton(text="ᴀᴅᴅ ɪɴ ɢʀᴏᴜᴘ", url="https://t.me/{app.username}?startgroup=true"),
+    ],
+    ]    
+    
+    await message.reply_text(
+        text=TEXT,
+        reply_markup=InlineKeyboardMarkup(BUTTON),
+        )
