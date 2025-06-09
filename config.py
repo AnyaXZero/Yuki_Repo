@@ -1,4 +1,3 @@
-
 import re
 from os import getenv
 
@@ -10,17 +9,17 @@ load_dotenv()
 API_ID = int(getenv("API_ID", "25955854"))
 API_HASH = getenv("API_HASH", "2ede59823a90cb31442a74f5ae01f675")
 BOT_PRIVACY = getenv("BOT_PRIVACY", "https://telegra.ph/Privacy-Policy-for-AnieXEricaMusic-10-06")
-BOT_TOKEN = getenv("BOT_TOKEN", "7979900579:AAFqBNSz_nOxXtyDcObsI8kUS56jMSdxrio")
+BOT_TOKEN = getenv("BOT_TOKEN", "7711734310:AAGZgPru-6Trx1tbeBfWmBjKUwp9qk020fs")
 
-MONGO_DB_URI = getenv("MONGO_DB_URI", "mongodb+srv://musicbotxd:musicbotxd@cluster0.6thyk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+MONGO_DB_URI = getenv("MONGO_DB_URI", "mongodb+srv://Hutao:Hutaobot@cluster0.izwosfg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 
 DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", 600))
 
-LOG_GROUP_ID = int(getenv("LOG_GROUP_ID",-1002392274240))
+LOG_GROUP_ID = int(getenv("LOG_GROUP_ID",-1002567836754))
 
-OWNER_ID = int(getenv("OWNER_ID", 6018803920))
+OWNER_ID = int(getenv("OWNER_ID", 7595051499))
 
-OWNER = int(getenv("OWNER", 6018803920))
+OWNER = int(getenv("OWNER", 7595051499))
 
 HEROKU_APP_NAME = getenv("HEROKU_APP_NAME")
 
@@ -32,8 +31,8 @@ UPSTREAM_REPO = getenv(
 )
 UPSTREAM_BRANCH = getenv("UPSTREAM_BRANCH", "main")
 GIT_TOKEN = "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"
-SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/MBT_UPDATES")
-SUPPORT_GROUP = getenv("SUPPORT_GROUP", "https://t.me/+dskKb6ezTmFiZWQ1")
+SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/HutaoUpdates")
+SUPPORT_GROUP = getenv("SUPPORT_GROUP", "https://t.me/+C0s3qb7sRZA0ZjRk")
 AUTO_LEAVING_ASSISTANT = bool(getenv("AUTO_LEAVING_ASSISTANT", True))
 SPOTIFY_CLIENT_ID = getenv("SPOTIFY_CLIENT_ID", "2a230af10e0a40638dc77c1febb47170")
 SPOTIFY_CLIENT_SECRET = '7f92897a59464ddbbf00f06cd6bda7fc'
@@ -56,17 +55,17 @@ autoclean = []
 confirmer = {}
 
 
-START_IMG_URL =  "https://i.ibb.co/gFg5XstQ/photo-2025-05-24-04-00-24-7507857220025974820.jpg"
-PLAYLIST_IMG_URL = "https://files.catbox.moe/bggrlh.jpg"
-STATS_IMG_URL = "https://files.catbox.moe/iffmnv.jpg"
-TELEGRAM_AUDIO_URL = "https://files.catbox.moe/f3yuiy.jpg"
-TELEGRAM_VIDEO_URL = "https://files.catbox.moe/urv7wi.jpg"
-STREAM_IMG_URL = "https://files.catbox.moe/6khxhw.jpg"
-SOUNCLOUD_IMG_URL = "https://files.catbox.moe/2tcim5.jpg"
-YOUTUBE_IMG_URL = "https://files.catbox.moe/bggrlh.jpg"
-SPOTIFY_ARTIST_IMG_URL = "https://files.catbox.moe/iffmnv.jpg"
-SPOTIFY_ALBUM_IMG_URL = "https://files.catbox.moe/6khxhw.jpg"
-SPOTIFY_PLAYLIST_IMG_URL = "https://files.catbox.moe/jkqyg2.jpg"
+START_IMG_URL =  "https://files.catbox.moe/bhy0ks.jpg"
+PLAYLIST_IMG_URL = "https://files.catbox.moe/vyxlxz.jpg"
+STATS_IMG_URL = "https://files.catbox.moe/n1ltse.jpg"
+TELEGRAM_AUDIO_URL = "https://files.catbox.moe/ra02su.jpg"
+TELEGRAM_VIDEO_URL = "https://files.catbox.moe/ra02su.jpg"
+STREAM_IMG_URL = "https://files.catbox.moe/bmulaj.jpga"
+SOUNCLOUD_IMG_URL = "https://files.catbox.moe/90o1js.jpg"
+YOUTUBE_IMG_URL = "https://files.catbox.moe/yoi70n.jpg"
+SPOTIFY_ARTIST_IMG_URL = "https://files.catbox.moe/2f7qbx.jpg"
+SPOTIFY_ALBUM_IMG_URL = "https://files.catbox.moe/y5hhpd.jpg"
+SPOTIFY_PLAYLIST_IMG_URL = "https://files.catbox.moe/ac40y5.jpg"
 
 def time_to_seconds(time):
     stringt = str(time)
