@@ -26,3 +26,17 @@
 .youtube.com	TRUE	/	FALSE	1749405723	ST-1f76k9j	csn=kX-st-dfPAPBbIRN&itct=CG0Q_FoiEwjOoNWPtOKNAxVUVfUHHfY4Ml8yCmctaGlnaC1yZWNaD0ZFd2hhdF90b193YXRjaJoBBhCOHhieAQ%3D%3D
 .youtube.com	TRUE	/	FALSE	1749405738	ST-1jjip66	csn=oecYGxkVmfLXe4Nw&itct=CGgQh_YEGAAiEwjOoNWPtOKNAxVUVfUHHfY4Ml9aD0ZFd2hhdF90b193YXRjaJoBBQgkEI4e
 .youtube.com	TRUE	/	FALSE	1749405745	ST-1a9n4h2	csn=aaE2mDBHS-RBnR6p&itct=CKoBEPxaGAAiEwjk4bybtOKNAxUN6qACHTTYMtkyBnNlYXJjaFIEamhvbJoBAxD0JA%3D%3D
+.spotify.com	TRUE	/	TRUE	1781027229	sp_t	e18f46dd22b6ab0a30732962b114a166
+.spotify.com	TRUE	/	TRUE	1749576832	sp_landing	https%3A%2F%2Fopen.spotify.com%2F%3Fsp_cid%3De18f46dd22b6ab0a30732962b114a166%26device%3Dmobile
+.spotify.com	TRUE	/	FALSE	1781027237	OptanonConsent	isGpcEnabled=0&datestamp=Mon+Jun+09+2025+23%3A17%3A17+GMT%2B0530+(India+Standard+Time)&version=202411.2.0&browserGpcFlag=0&isIABGlobal=false&hosts=&landingPath=NotLandingPage&groups=s00%3A1%2Cf00%3A1%2Cm00%3A1%2Ct00%3A1%2Ci00%3A1%2Cf11%3A1%2Cm03%3A1&geolocation=IN%3BRJ&AwaitingReconsent=false
+.spotify.com	TRUE	/	TRUE	1749492239	_cs_mk_ga	0.5320654355989801_1749490439249
+open.spotify.com	FALSE	/	FALSE	0	sss	1
+.spotify.com	TRUE	/	TRUE	1781027236	sp_adid	7d7f1ca8-f172-43f2-8dfa-e64ef5bf604d
+.spotify.com	TRUE	/	FALSE	1784051256	_ga_ZWG1NSHWD8	GS2.1.s1749490440$o1$g1$t1749491256$j39$l0$h0
+.spotify.com	TRUE	/	FALSE	1784051256	_ga	GA1.2.622014657.1749490440
+.spotify.com	TRUE	/	FALSE	1749577656	_gid	GA1.2.1993199126.1749490440
+.spotify.com	TRUE	/	FALSE	1784051256	_ga_BMC5VGR8YS	GS2.2.s1749490441$o1$g1$t1749491256$j40$l0$h0
+.spotify.com	TRUE	/	FALSE	1781026445	OptanonAlertBoxClosed	2025-06-09T17:34:05.396Z
+.spotify.com	TRUE	/	TRUE	1784050448	sp_m	in-en
+.spotify.com	TRUE	/	TRUE	1750700828	sp_dc	AQAXuySBiYZpWRxMwptvsN3855TmTzl7zoArT2vEt7ibw4mwG4HDwonXvSr2tTKtXCdfG16RKQ3aN9XN6fNT3wLSnM1Wb3L5-oNSjWN9pdCEJ1fJBCjAL3XhAsPHw3SWEHSPeNLVE_iw9-z0asft9hT0ghsIIxHvd8oa-COFdIKVDSPzcDAkGSwCSM_yStVxqFItoAQPc-eltKmB2A
+.spotify.com	TRUE	/	FALSE	1749491295	_gat_UA-5784146-31	1
