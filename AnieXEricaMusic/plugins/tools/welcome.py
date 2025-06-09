@@ -1,4 +1,3 @@
-
 from html import escape
 from secrets import choice
 from typing import List
