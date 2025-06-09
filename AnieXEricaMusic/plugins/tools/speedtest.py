@@ -1,13 +1,10 @@
 import asyncio
-
 import speedtest
 from pyrogram import filters
 from pyrogram.types import Message
-
 from AnieXEricaMusic import app
 from AnieXEricaMusic.misc import SUDOERS
 from AnieXEricaMusic.utils.decorators.language import language
-
 
 def testspeed(m, _):
     try:
