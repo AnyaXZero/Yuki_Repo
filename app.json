@@ -16,12 +16,12 @@
   "env": {
     "API_ID": {
       "description": "Get this value from https://my.telegram.org",
-      "value": "25955854",
+      "value": "28699554",
       "required": true
     },
     "API_HASH": {
       "description": "Get this value from https://my.telegram.org",
-      "value": "2ede59823a90cb31442a74f5ae01f675",
+      "value": "fe1aebd2126aa99df66396123eba8495",
       "required": true
     },
     "BOT_TOKEN": {
@@ -51,7 +51,7 @@
     },
     "STRING_SESSION": {
       "description": "A Pyrogram String Session from @Sessoin_String_gen_BOT on Telegram.",
-      "value": "BQFTgqgABvS6iC90hxxm33VK0DKEg18QfEVEc3yOQPC8cE5K3JndIbj8kxAGtdEW200Rn3c5ZxC2e_VfAh7gKNEoR_pqjavLHCBqbciTmvqdN9ZoMsCYwYiWvqTiJI-WhCjLrwn-EClp3VwORa3pQn3dF95B-m3414lsKZDfr-b_b2qYrQ3dV_n8DTdyZcc8MbQ0WiYhmEqq4Eb__oIXqkmYWUgBmJTDabRCSq_xEl9R0m5UHUro2NwUBMdVt2wO6W39-PVNfyJ1cpsrTZ6F_lWhC9FseUrIK14OH_kWe7fy7luymUr40DCinVUIzua2nI7__mMjdyMoxpwbhlcdGbb04UcX7gAAAAHUsVFIAA",
+      "value": "AQG166IAQhs2knmC7b0pAM7Z0mY8pyVnfWJtKo4shFAORQ5BS3g7vI0oafkQ5AdJcIERzRpz2JuwUWDKW77rshkVZ2LGB_9HUL3s04mhHT7kbOC8mQQQ_4-KBDHHD8YcPUE4tdfBXks7KR1flyI-OqGji_jrEstfFMsqm-ebqgV1yHvvk5PvwBgxt6UhG6b1Fum1qYLnnprRFq3vnmV4ccFKlb2Y66ffJi9u3lc874rS3U0jfXoiv0XkML2rSP_F-pggv8jMOqQWbJIECaxqyIKPghWVDCJDnMb7T071Ortga1e4XsL81LI5vDV0DzIFyj7yRY5Pys5pVOvH1A_FIIys5LrYNgAAAAHNtx3RAA",
       "required": true
     },
     "HEROKU_API_KEY": {
