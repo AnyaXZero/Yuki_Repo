@@ -2,7 +2,7 @@ import requests
 from pyrogram import Client, filters
 from pyrogram.types import Message
 
-from Shigaraki import app  
+from AnieXEricaMusic import app  
 
 @app.on_message(filters.command("truth"))
 async def truth(client: Client, message: Message):
