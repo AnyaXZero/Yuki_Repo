@@ -66,7 +66,7 @@ async def awake(_, message: Message):
     owner = await app.get_users(OWNER_ID)
     
     if message.from_user.id == OWNER_ID:
-        TEXT = "ɪ'ᴍ ᴀʟɪᴠᴇ ᴍʏ ʟᴏʀᴅ <a href='https://files.catbox.moe/auy1t2.jpg' target='_blank'>⚡</a> !\n\n"
+        TEXT = "ɪ'ᴍ ᴀʟɪᴠᴇ ᴍʏ ʟᴏʀᴅ <a href='https://files.catbox.moe/c0ettb.jpg' target='_blank'>⚡</a> !\n\n"
     else:
         TEXT = f"ʏᴏᴏ {message.from_user.mention}, <a href='https://files.catbox.moe/dc6htz.jpg' target='_blank'>⚡</a>\n\nɪ'ᴍ {app.mention}\n──────────────────\n"
     
