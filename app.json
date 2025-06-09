@@ -26,27 +26,27 @@
     },
     "BOT_TOKEN": {
       "description": "A Bot's token from Botfather",
-      "value": "7979900579:AAFqBNSz_nOxXtyDcObsI8kUS56jMSdxrio",
+      "value": "7711734310:AAGZgPru-6Trx1tbeBfWmBjKUwp9qk020fs",
       "required": true
     },
     "MONGO_DB_URI": {
       "description": "Get a mongodb url from https://cloud.mongodb.com.",
-      "value": "mongodb+srv://musicbotxd:musicbotxd@cluster0.6thyk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+      "value": "mongodb+srv://Hutao:Hutaobot@cluster0.izwosfg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
       "required": true
     },
     "OWNER_ID": {
       "description": "The user id of user whom you would like to add as OWNER.from @Sophia_x_MusicBot on Telegram.",
-      "value": "6018803920",
+      "value": "7595051499",
       "required": true
     },
    "SUPPORT_CHANNEL": {
       "description": "Add channel link",
-      "value": "https://t.me/MBT_UPDATES",
+      "value": "https://t.me/HutaoUpdates",
       "required": true
     },
       "SUPPORT_CHAT": {
       "description": "Add Chat group & support group Link",
-      "value": "https://t.me/+dskKb6ezTmFiZWQ1",
+      "value": "https://t.me/+C0s3qb7sRZA0ZjRk",
       "required": true
     },
     "STRING_SESSION": {
@@ -81,22 +81,22 @@
     },
     "START_IMG_URL": {
       "description": "Your Bot Start Time Pic tgm link from @Sophia_x_MusicBot on Telegram.",
-      "value": "https://i.ibb.co/gFg5XstQ/photo-2025-05-24-04-00-24-7507857220025974820.jpg",
+      "value": "https://files.catbox.moe/bhy0ks.jpg",
       "required": false
     },
     "PING_IMG_URL": {
       "description": "Your Bot Ping Check Time Pic tgm link from @Sophia_x_MusicBot on Telegram.",
-      "value": "https://telegra.ph/file/b37803a767b15e939513d.png",
+      "value": "https://files.catbox.moe/c0ettb.jpg",
       "required": false
     },
     "STATS_IMG_URL": {
       "description": "Your Bot Stats Time Pic tgm link from @Sophia_x_MusicBot on Telegram.",
-      "value": "https://files.catbox.moe/iffmnv.jpg",
+      "value": "https://files.catbox.moe/n1ltse.jpg",
       "required": false
     },
     "LOGGER_ID": {
       "description": "Your Log Group ID, add your bot and promote as an admin with full rights!. Channel ki id mat daal dena bsdk.",
-      "value": "-1002392274240",
+      "value": "-1002567836754",
       "required": true
     }
   },
