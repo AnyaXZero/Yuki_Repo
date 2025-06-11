@@ -2,7 +2,7 @@ from datetime import datetime
 from pyrogram import filters
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from Devine import app
-from Devine.core.call import devine as Devine
+from Devine.core.call import AnieXEricaMusic
 from Devine.utils import bot_sys_stats
 from Devine.utils.decorators.language import language
 from config import BANNED_USERS, SUPPORT_CHANNEL, SUPPORT_CHAT
