@@ -21,9 +21,9 @@ OWNER_ID = int(getenv("OWNER_ID", 7595051499))
 
 OWNER = int(getenv("OWNER", 7595051499))
 
-HEROKU_APP_NAME = getenv("HEROKU_APP_NAME")
+HEROKU_APP_NAME = getenv("HEROKU_APP_NAME","hutao2")
 
-HEROKU_API_KEY = getenv("HEROKU_API_KEY","HRKU-3a48d735-445f-49c4-a6cf-fea438f945ef")
+HEROKU_API_KEY = getenv("HRKU-3c34ce6d-58ec-4e28-9c51-d4b2e3efce83")
 
 UPSTREAM_REPO = getenv(
     "UPSTREAM_REPO",
