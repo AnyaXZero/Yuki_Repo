@@ -2,7 +2,7 @@ from datetime import datetime
 from pyrogram import filters
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from AnieXEricaMusic import app
-from AnieXEricaMusic.core.call import AnieXEricaMusic
+from AnieXEricaMusic.core.call import ping
 from AnieXEricaMusic.utils import bot_sys_stats
 from AnieXEricaMusic.utils.decorators.language import language
 from config import BANNED_USERS, SUPPORT_CHANNEL, SUPPORT_CHAT
@@ -16,7 +16,7 @@ async def ping_com(client, message: Message, _):
         text=_["ping_1"].format(app.mention),
     )  # Fixed missing parenthesis here
 
-    pytgping = await Devine.ping()
+    pytgping = await ping()
     UP, CPU, RAM, DISK = await bot_sys_stats()
     resp = (datetime.now() - start).microseconds / 1000
 
