@@ -1,6 +1,5 @@
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from AnieXEricaMusic.utils.fonts import Fonts
 from AnieXEricaMusic import app
 
 @app.on_message(filters.command(["font", "fonts"]))
