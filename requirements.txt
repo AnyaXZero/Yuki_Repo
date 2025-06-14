@@ -32,5 +32,4 @@ youtube-search-python
 pyromod
 wget
 blackpink
-Telegraph 
-Config
+Telegraph
