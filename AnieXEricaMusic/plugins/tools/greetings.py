@@ -21,14 +21,14 @@ async def goodnight_command_handler(_, message: Message):
     goodnight_message = random.choice(goodnight_phrases)
     
     await message.reply_text(
-        f"ɢᴏᴏᴅɴɪɢʜᴛ! {sender_firstname} {goodnight_message} {emoji}.",
+        f"ɢᴏᴏᴅɴɪɢʜᴛ! ꜱᴡᴇᴇᴛ ᴅʀᴇᴀᴍꜱ {sender_firstname} {goodnight_message} {emoji}.",
         parse_mode=ParseMode.HTML
     )
 
 
 def get_random_emoji():
     emojis = [
-        "😴", "😪", "👀", "❤️", "✨", "🐼", "💤"
+        "😴", "😪", "👀", "❤️", "✨", "🐼", "💤","🥰"
     ]
     return random.choice(emojis)
 
@@ -39,7 +39,7 @@ async def goodmorning_command_handler(_, message: Message):
     sender_firstname = f"<a href='tg://user?id={sender.id}'>{sender.first_name}</a>"
     emoji = get_random_emoji_for_morning()
     
-    bot_private_link = f"<a href='tg://user?id={app.me.id}'>suzune"
+    bot_private_link = f"<a href='tg://user?id={app.me.id}'>𝐘ᴜᴋɪ 𝐒ᴜᴏᴜぇ"
     
     goodmorning_phrases = [
         "ɢᴏᴏᴅ ᴍᴏʀɴɪɴɢ",
@@ -59,6 +59,6 @@ async def goodmorning_command_handler(_, message: Message):
 
 def get_random_emoji_for_morning():
     emojis = [
-        "😊", "❤️", "👀", "🕊️", "🌄", "💫", "✨", "💞"
+        "😊", "❤️", "👀", "🕊️", "🌄", "💫", "✨", "💞","🦢"
     ]
     return random.choice(emojis)
