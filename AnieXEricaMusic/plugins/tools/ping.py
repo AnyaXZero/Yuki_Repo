@@ -26,13 +26,13 @@ async def ping(_, message: Message):
     await temp.delete()
 
     caption = (
-        " {mention},ɪ'ᴍ ᴀʟɪᴠᴇ ʙᴀʙʏ 🦋✨\n"
+        " ɪ'ᴍ ᴀʟɪᴠᴇ ʙᴀʙʏ 🦋✨\n"
         
         "🏓 ᴩᴏɴɢ!\n"
-        f"➤ ᴩɪɴɢ: `{ping_ms}ms`\n"
-        f"➤ ᴩʏᴛʜᴏɴ: `{python_version}`\n"
-        f"➤ ᴩʏʀᴏɢʀᴀᴍ: `{pyrogram_version}`\n"
-        f"➤ ᴜᴩᴛɪᴍᴇ : `{uptime}`"
+        f"➤ ᴩɪɴɢ: {ping_ms}ms\n"
+        f"➤ ᴩʏᴛʜᴏɴ: {python_version}\n"
+        f"➤ ᴩʏʀᴏɢʀᴀᴍ: {pyrogram_version}\n"
+        f"➤ ᴜᴩᴛɪᴍᴇ : {uptime}"
     )
 
     await message.reply_photo(
