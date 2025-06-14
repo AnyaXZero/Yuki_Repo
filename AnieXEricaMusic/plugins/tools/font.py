@@ -47,6 +47,39 @@ def sans(text):
 def wide(text):
     return ' '.join(c for c in text)
 
+def square(text):
+    normal = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    square = "🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉" + \
+             "🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉"
+    return ''.join([square[normal.index(c)] if c in normal else c for c in text])
+
+def inverted(text):
+    normal = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    inverted = "ɐqɔpǝɟƃɥᴉɾʞlɯuodbɹsʇnʌʍxʎz" + \
+               "∀𐐒ƆᗡƎℲפHIſʞ˥WNOԀQᴚS┴∩ΛMXʎZ"
+    table = str.maketrans(normal + normal[::-1], inverted + inverted[::-1])
+    return text[::-1].translate(table)
+
+def serif(text):
+    # Mathematical Bold Italic capital letters as serif style example
+    normal = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    serif_chars = "𝑨𝑩𝑪𝑫𝑬𝑭𝑮𝑯𝑰𝑱𝑲𝑳𝑴𝑵𝑶𝑷𝑄𝑹𝑺𝑻𝑼𝑽𝑾𝑿𝒀𝒁" + \
+                  "𝒂𝒃𝒄𝒅𝒆𝒇𝒈𝒉𝒊𝒋𝒌𝒍𝒎𝒏𝒐𝒑𝒒𝒓𝒔𝒕𝒖𝒗𝒘𝒙𝒚𝒛"
+    table = str.maketrans(normal, serif_chars)
+    return text.translate(table)
+
+def circled(text):
+    normal = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    circled = "ⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ" + \
+              "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏ"
+    return ''.join([circled[normal.index(c)] if c in normal else c for c in text])
+
+def gothic(text):
+    normal = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    gothic = "𝔞𝔟𝔠𝔡𝔢𝔣𝔤𝔥𝔦𝔧𝔨𝔩𝔪𝔫𝔬𝔭𝔮𝔯𝔰𝔱𝔲𝔳𝔴𝔵𝔶𝔷" + \
+             "𝔄𝔅ℭ𝔇𝔈𝔉𝔊ℌℑ𝔍𝔎𝔏𝔐𝔑𝔒𝔓𝔔ℜ𝔖𝔗𝔘𝔙𝔚𝔛𝔜ℨ"
+    return ''.join([gothic[normal.index(c)] if c in normal else c for c in text])
+
 def upside_down(text):
     table = str.maketrans("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 
                           "ɐqɔpǝɟƃɥᴉɾʞʃɯuodbɹsʇnʌʍxʎz∀𐐒ƆᗡƎℲפHIſʞ˥WNOԀQᴚS┴∩ΛMXʎZ"[::-1])
@@ -63,6 +96,11 @@ style_map = {
     "doublestruck": doublestruck,
     "sans": sans,
     "wide": wide,
+    "square": square,
+    "inverted": inverted,
+    "serif": serif,
+    "circled": circled,
+    "gothic": gothic,
     "upside": upside_down,
 }
 
@@ -78,6 +116,12 @@ def font_keyboard():
         [InlineKeyboardButton("𝔻 Double", callback_data="font_doublestruck"),
          InlineKeyboardButton("𝗦 Sans", callback_data="font_sans"),
          InlineKeyboardButton("W͟i͟d͟e", callback_data="font_wide")],
+        [InlineKeyboardButton("🄂 Square", callback_data="font_square"),
+         InlineKeyboardButton("↯ Inverted", callback_data="font_inverted"),
+         InlineKeyboardButton("𝑺 Serif", callback_data="font_serif")],
+        [InlineKeyboardButton("Ⓞ Circled", callback_data="font_circled"),
+         InlineKeyboardButton("𝔊 Gothic", callback_data="font_gothic")]
+    ])
         [InlineKeyboardButton("🔁 Upside", callback_data="font_upside"),
          InlineKeyboardButton("🅰 Preview", callback_data="font_preview")]
     ])
