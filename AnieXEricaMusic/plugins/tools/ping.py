@@ -26,9 +26,9 @@ async def ping(_, message: Message):
     await temp.delete()
 
     caption = (
-         f"{user_mention}\n"
-        "🦋✨ ɪ ᴀᴍ ᴀʟɪᴠᴇ ʙᴀʙʏ!\n\n
-        "🏓 **ᴩᴏɴɢ!**\n"
+        " {mention},ɪ'ᴍ ᴀʟɪᴠᴇ ʙᴀʙʏ 🦋✨,
+        
+        "🏓 ᴩᴏɴɢ!\n"
         f"➤ ᴩɪɴɢ: `{ping_ms}ms`\n"
         f"➤ ᴩʏᴛʜᴏɴ: `{python_version}`\n"
         f"➤ ᴩʏʀᴏɢʀᴀᴍ: `{pyrogram_version}`\n"
