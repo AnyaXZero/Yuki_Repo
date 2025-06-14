@@ -41,7 +41,7 @@ import asyncio
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from config import OWNER_ID
-from Devine import app
+from AnieXEricaMusic import app
 import config 
 
 @app.on_message(filters.command("alive"))
