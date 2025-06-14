@@ -1,114 +1,96 @@
 from pyrogram import filters
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, Message
 from AnieXEricaMusic import app
-from AnieXEricaMusic import app as pbot
+from font import Fonts
 
+# Font style menu
 @app.on_message(filters.command(["font", "fonts"]))
-async def style_buttons(c, m, cb=False):
+async def font_menu(_, message: Message):
+    if not message.reply_to_message or not message.reply_to_message.text:
+        return await message.reply("🔁 **Reply to a text message** to apply font style.")
+
     buttons = [
-        [
-            InlineKeyboardButton("𝗦𝗮𝗻𝘀", callback_data="style+sans"),
-            InlineKeyboardButton("𝙎𝙖𝙣𝙨", callback_data="style+slant_sans"),
-            InlineKeyboardButton("𝖲𝖺𝗇𝗌", callback_data="style+sim"),
-        ],
-        [
-            InlineKeyboardButton("𝘚𝘢𝘯𝘴", callback_data="style+slant"),
-            InlineKeyboardButton("𝐒𝐞𝐫𝐢𝐟", callback_data="style+serif"),
-            InlineKeyboardButton("𝑺𝒆𝒓𝒊𝒇", callback_data="style+bold_cool"),
-        ],
-        [
-            InlineKeyboardButton("𝑆𝑒𝑟𝑖𝑓", callback_data="style+cool"),
-            InlineKeyboardButton("𝓈𝒸𝓇𝒾𝓅𝓉", callback_data="style+script"),
-            InlineKeyboardButton("𝓼𝓬𝓻𝓲𝓹𝓽", callback_data="style+script_bolt"),
-        ],
-        [
-            InlineKeyboardButton("sᴍᴀʟʟ cᴀᴘs", callback_data="style+small_cap"),
-            InlineKeyboardButton("🅒︎🅘︎🅡︎🅒︎🅛︎🅔︎🅨", callback_data="style+circle_dark"),
-            InlineKeyboardButton("Ⓒ︎Ⓘ︎Ⓡ︎Ⓒ︎Ⓛ︎Ⓔ︎Ⓢ︎", callback_data="style+circles"),
-        ],
-        [
-            InlineKeyboardButton("𝕲𝖔𝖙𝖍𝖎𝖈", callback_data="style+gothic_bolt"),
-            InlineKeyboardButton("𝔊𝔬𝔱𝔥𝔦𝔠", callback_data="style+gothic"),
-            InlineKeyboardButton("ᵗⁱⁿʸ", callback_data="style+tiny"),
-        ],
-        [
-            InlineKeyboardButton("𝕆𝕦𝕥𝕝𝕚𝕟𝕖", callback_data="style+outline"),
-            InlineKeyboardButton("ᑕOᗰIᑕ", callback_data="style+comic"),
-            InlineKeyboardButton("🇸 🇵 🇪 🇨 🇮 🇦 🇱 ", callback_data="style+special"),
-        ],
-        [
-            InlineKeyboardButton("🅂🅀🅄🄰🅇🅴🅂", callback_data="style+squares"),
-            InlineKeyboardButton("🆂︎🆀︎🆄︎🅰︎🆁︎🅴︎🆂︎", callback_data="style+squares_bold"),
-            InlineKeyboardButton("ꪖꪀᦔꪖꪶꪊᥴ𝓲ꪖ", callback_data="style+andalucia"),
-        ],
-        [
-            InlineKeyboardButton("ᴄʟᴏsᴇ", callback_data="close_reply"),
-        ]
+        [InlineKeyboardButton("𝗦𝗮𝗻𝘀", callback_data="style+sans"),
+         InlineKeyboardButton("𝙎𝙖𝙣𝙨", callback_data="style+slant_sans"),
+         InlineKeyboardButton("𝖲𝖺𝗇𝗌", callback_data="style+sim")],
+        [InlineKeyboardButton("𝘚𝘢𝘯𝘴", callback_data="style+slant"),
+         InlineKeyboardButton("𝐒𝐞𝐫𝐢𝐟", callback_data="style+serif"),
+         InlineKeyboardButton("𝑺𝒆𝒓𝒊𝒇", callback_data="style+bold_cool")],
+        [InlineKeyboardButton("𝓈𝒸𝓇𝒾𝓅𝓉", callback_data="style+script"),
+         InlineKeyboardButton("𝓼𝓬𝓻𝓲𝓹𝓽", callback_data="style+script_bolt"),
+         InlineKeyboardButton("𝑆𝑒𝑟𝑖𝑓", callback_data="style+cool")],
+        [InlineKeyboardButton("sᴍᴀʟʟ cᴀᴘs", callback_data="style+small_cap"),
+         InlineKeyboardButton("🅒︎🅘︎🅡︎🅒︎🅛︎🅔︎🅨", callback_data="style+circle_dark"),
+         InlineKeyboardButton("Ⓒ︎Ⓘ︎Ⓡ︎Ⓒ︎Ⓛ︎Ⓔ︎Ⓢ︎", callback_data="style+circles")],
+        [InlineKeyboardButton("𝕲𝖔𝖙𝖍𝖎𝖈", callback_data="style+gothic_bolt"),
+         InlineKeyboardButton("𝔊𝔬𝔱𝔥𝔦𝔠", callback_data="style+gothic"),
+         InlineKeyboardButton("ᵗⁱⁿʸ", callback_data="style+tiny")],
+        [InlineKeyboardButton("𝕆𝕦𝕥𝕝𝕚𝕟𝕖", callback_data="style+outline"),
+         InlineKeyboardButton("ᑕOᗰIᑕ", callback_data="style+comic"),
+         InlineKeyboardButton("🇸 🇵 🇪 🇨 🇮 🇦 🇱 ", callback_data="style+special")],
+        [InlineKeyboardButton("🅂🅀🅄🄰🅇🅴🅂", callback_data="style+squares"),
+         InlineKeyboardButton("🆂︎🆀︎🆄︎🅰︎🆁︎🅴︎🆂︎", callback_data="style+squares_bold"),
+         InlineKeyboardButton("ꪖꪀᦔꪖꪶꪊᥴ𝓲ꪖ", callback_data="style+andalucia")],
+        [InlineKeyboardButton("❌ Close", callback_data="close_reply")]
     ]
-    
-    if not cb:
-        await m.reply_text(
-            text=m.text.split(None, 1)[1],
-            reply_markup=InlineKeyboardMarkup(buttons),
-            quote=True,
-        )
-    else:
-        await m.answer()
-        await m.message.edit_reply_markup(InlineKeyboardMarkup(buttons))
 
+    await message.reply(
+        "🎨 **Choose a font style below:**",
+        reply_markup=InlineKeyboardMarkup(buttons),
+        quote=True
+    )
 
-@pbot.on_callback_query(filters.regex("^style"))
-async def style(c, m):
-    await m.answer()
-    cmd, style = m.data.split("+")
-    
-    # Map styles to their respective font class methods
+# Apply selected font style
+@app.on_callback_query(filters.regex(r"^style\+"))
+async def apply_style(_, query: CallbackQuery):
+    _, style = query.data.split("+")
+
+    if not query.message.reply_to_message or not query.message.reply_to_message.text:
+        return await query.answer("⚠️ Replied text not found!", show_alert=True)
+
+    original_text = query.message.reply_to_message.text.strip()
+
+    # Available style mappings
     style_map = {
-        "typewriter": Fonts.typewriter,
-        "outline": Fonts.outline,
+        "sans": Fonts.san,
+        "slant_sans": Fonts.slant_san,
+        "sim": Fonts.sim,
+        "slant": Fonts.slant,
         "serif": Fonts.serief,
         "bold_cool": Fonts.bold_cool,
         "cool": Fonts.cool,
-        "small_cap": Fonts.smallcap,
         "script": Fonts.script,
         "script_bolt": Fonts.bold_script,
-        "tiny": Fonts.tiny,
-        "comic": Fonts.comic,
-        "sans": Fonts.san,
-        "slant_sans": Fonts.slant_san,
-        "slant": Fonts.slant,
-        "sim": Fonts.sim,
-        "circles": Fonts.circles,
+        "small_cap": Fonts.smallcap,
         "circle_dark": Fonts.dark_circle,
-        "gothic": Fonts.gothic,
+        "circles": Fonts.circles,
         "gothic_bolt": Fonts.bold_gothic,
-        "cloud": Fonts.cloud,
-        "happy": Fonts.happy,
-        "sad": Fonts.sad,
+        "gothic": Fonts.gothic,
+        "tiny": Fonts.tiny,
+        "outline": Fonts.outline,
+        "comic": Fonts.comic,
         "special": Fonts.special,
         "squares": Fonts.square,
         "squares_bold": Fonts.dark_square,
         "andalucia": Fonts.andalucia,
-        "manga": Fonts.manga,
-        "stinky": Fonts.stinky,
-        "bubbles": Fonts.bubbles,
-        "underline": Fonts.underline,
-        "ladybug": Fonts.ladybug,
-        "rays": Fonts.rays,
-        "birds": Fonts.birds,
-        "slash": Fonts.slash,
-        "stop": Fonts.stop,
-        "skyline": Fonts.skyline,
-        "arrows": Fonts.arrows,
-        "qvnes": Fonts.rvnes,
-        "strike": Fonts.strike,
-        "frozen": Fonts.frozen
     }
-    
-    cls = style_map.get(style)
-    if cls:
-        new_text = cls(m.message.reply_to_message.text.split(None, 1)[1])
-        try:
-            await m.message.edit_text(new_text, reply_markup=m.message.reply_markup)
-        except Exception as e:
-            print(f"Error editing message: {e}")
+
+    styler = style_map.get(style)
+    if not styler:
+        return await query.answer("🚫 Unknown font style.")
+
+    styled_text = styler(original_text)
+
+    try:
+        await query.message.edit_text(
+            styled_text,
+            reply_markup=query.message.reply_markup
+        )
+    except Exception as e:
+        print(f"[❌ ERROR APPLYING STYLE] {e}")
+        await query.answer("❌ Failed to style text.")
+
+# Optional: Handle close button
+@app.on_callback_query(filters.regex("close_reply"))
+async def close_reply(_, query: CallbackQuery):
+    await query.message.delete()
