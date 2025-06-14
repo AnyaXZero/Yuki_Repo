@@ -44,14 +44,19 @@ async def font_menu(_, message: Message):
 @app.on_callback_query(filters.regex(r"^style\+"))
 async def apply_style(_, query: CallbackQuery):
     _, style = query.data.split("+")
+
+    if not query.message.reply_to_message or not query.message.reply_to_message.text:
+        return await query.answer("⚠️ Replied text not found!", show_alert=True)
+
     original_text = query.message.reply_to_message.text.strip()
 
+    # Available style mappings
     style_map = {
         "sans": Fonts.san,
         "slant_sans": Fonts.slant_san,
         "sim": Fonts.sim,
         "slant": Fonts.slant,
-        "serif": Fonts.serif,
+        "serif": Fonts.serief,
         "bold_cool": Fonts.bold_cool,
         "cool": Fonts.cool,
         "script": Fonts.script,
@@ -72,7 +77,7 @@ async def apply_style(_, query: CallbackQuery):
 
     styler = style_map.get(style)
     if not styler:
-        return await query.answer("🚫 Unknown font style.", show_alert=True)
+        return await query.answer("🚫 Unknown font style.")
 
     styled_text = styler(original_text)
 
@@ -82,12 +87,26 @@ async def apply_style(_, query: CallbackQuery):
             reply_markup=query.message.reply_markup
         )
     except Exception as e:
-        if "Message is not modified" in str(e):
-            await query.answer("⚠️ Font already applied!", show_alert=True)
-        else:
-            print(f"[❌ ERROR APPLYING STYLE] {e}")
-            await query.answer("❌ Failed to style text.", show_alert=True)
-            # Optional: Handle close button
+        print(f"[❌ ERROR APPLYING STYLE] {e}")
+        await query.answer("❌ Failed to style text.")
+styler = style_map.get(style)
+
+if not styler:
+    return await query.answer("🚫 Unknown font style.")
+
+try:
+    styled_text = styler(original_text)
+
+    await query.message.edit_text(
+        styled_text,
+        reply_markup=query.message.reply_markup
+    )
+
+except Exception as e:
+    print(f"[❌ ERROR APPLYING STYLE] {e}")
+    await query.answer("❌ Failed to apply font style.")
+
+# Optional: Handle close button
 @app.on_callback_query(filters.regex("close_reply"))
 async def close_reply(_, query: CallbackQuery):
     await query.message.delete()
