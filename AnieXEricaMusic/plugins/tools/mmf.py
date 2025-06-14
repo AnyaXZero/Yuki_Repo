@@ -4,86 +4,104 @@ from PIL import Image, ImageDraw, ImageFont
 from pyrogram import filters
 from pyrogram.types import Message
 from AnieXEricaMusic import app
-from font import get_font
-from tempfile import mktemp
 
-SUPPORTED_MIME = ["image/", "video/mp4", "image/webp", "application/x-tgsticker"]
 
 @app.on_message(filters.command("mmf"))
 async def mmf(_, message: Message):
-    reply = message.reply_to_message
-    if not reply or not (reply.photo or reply.sticker or reply.document):
-        return await message.reply_text("📸 Reply to an image, sticker, or GIF to meme it!")
+    chat_id = message.chat.id
+    reply_message = message.reply_to_message
 
     if len(message.text.split()) < 2:
-        return await message.reply_text("💬 Provide text like:\n`/mmf Top Text;Bottom Text`")
+        return await message.reply_text("**Please provide some text.**\nUsage: `/mmf Top Text;Bottom Text`")
+
+    if not reply_message or not (reply_message.photo or reply_message.document):
+        return await message.reply_text("Please reply to an image to create a meme.")
 
     msg = await message.reply_text("❄️ Creating your meme...")
+
     text = message.text.split(None, 1)[1]
+    file = await app.download_media(reply_message)
 
-    # Download media
-    media = await app.download_media(reply, file_name=mktemp(suffix=".tmp"))
-    if reply.sticker and reply.sticker.is_animated:
-        await msg.edit("⚠️ Animated stickers (.TGS) are not yet supported for text overlay.")
-        os.remove(media)
-        return
-
-    meme = await draw_text(media, text)
-    if meme.endswith(".webp") or meme.endswith(".jpg"):
-        await message.reply_photo(photo=meme)
-    else:
-        await message.reply_document(document=meme)
+    meme = await drawText(file, text)
+    await app.send_document(chat_id, document=meme)
 
     await msg.delete()
     os.remove(meme)
 
 
-async def draw_text(image_path, text: str) -> str:
+async def drawText(image_path, text):
     try:
         img = Image.open(image_path).convert("RGB")
     except Exception:
-        return "❌ Couldn't open the image."
+        return "Couldn't open the image."
     finally:
         if os.path.exists(image_path):
             os.remove(image_path)
 
-    width, height = img.size
-    font = get_font(size=int(width / 15))  # Adjust font size based on width
+    i_width, i_height = img.size
+
+    # Font path
+    if os.name == "nt":
+        fnt_path = "font.ttf"  # Make sure this exists on Windows
+    else:
+        fnt_path = "./AnieXEricaMusic/assets/default.ttf"  # Linux font path
+
+    try:
+        m_font = ImageFont.truetype(fnt_path, int((70 / 640) * i_width))
+    except OSError:
+        return "⚠️ Font file not found! Please check your font path."
+
+    # Split the input text
+    if ";" in text:
+        upper_text, lower_text = text.split(";", 1)
+    else:
+        upper_text = text
+        lower_text = ""
+
     draw = ImageDraw.Draw(img)
+    current_h, pad = 10, 5
+    wrap_width = max(20, i_width // 40)
 
-    top_text, bottom_text = (text.split(";", 1) + [""])[:2]
-    wrap_width = max(20, width // 40)
-
-    def outline(draw, x, y, text, font):
-        # Draw black outline
-        for dx, dy in [(-2, -2), (-2, 2), (2, -2), (2, 2)]:
+    def draw_outline_text(draw, position, text, font):
+        x, y = position
+        # Black outline
+        for dx, dy in [(-2, 0), (2, 0), (0, -2), (0, 2)]:
             draw.text((x + dx, y + dy), text, font=font, fill="black")
         draw.text((x, y), text, font=font, fill="white")
 
     # Draw top text
-    if top_text:
-        current_h = 10
-        for line in textwrap.wrap(top_text, width=wrap_width):
-            bbox = font.getbbox(line)
-            text_width = bbox[2] - bbox[0]
-            text_height = bbox[3] - bbox[1]
-            x = (width - text_width) / 2
-            outline(draw, x, current_h, line, font)
-            current_h += text_height + 5
+    if upper_text:
+        for line in textwrap.wrap(upper_text, width=wrap_width):
+            uwl, uht, uwr, uhb = m_font.getbbox(line)
+            u_width, u_height = uwr - uwl, uhb - uht
+            draw_outline_text(
+                draw,
+                (((i_width - u_width) / 2), int((current_h / 640) * i_width)),
+                line,
+                m_font,
+            )
+            current_h += u_height + pad
 
     # Draw bottom text
-    if bottom_text:
-        lines = textwrap.wrap(bottom_text, width=wrap_width)
-        total_height = sum(font.getbbox(line)[3] - font.getbbox(line)[1] for line in lines) + 5 * len(lines)
-        current_h = height - total_height - 10
-        for line in lines:
-            bbox = font.getbbox(line)
-            text_width = bbox[2] - bbox[0]
-            text_height = bbox[3] - bbox[1]
-            x = (width - text_width) / 2
-            outline(draw, x, current_h, line, font)
-            current_h += text_height + 5
+    if lower_text:
+        for line in textwrap.wrap(lower_text, width=wrap_width):
+            uwl, uht, uwr, uhb = m_font.getbbox(line)
+            u_width, u_height = uwr - uwl, uhb - uht
+            draw_outline_text(
+                draw,
+                (
+                    (i_width - u_width) / 2,
+                    i_height - u_height - int((20 / 640) * i_width),
+                ),
+                line,
+                m_font,
+            )
+            current_h += u_height + pad
 
-    output_file = f"memify_{os.urandom(4).hex()}.webp"
-    img.save(output_file, "webp")
-    return output_file
+    webp_file = "memify.webp"
+    img.save(webp_file, "webp")
+
+    return webp_file
+
+
+__mod_name__ = "mmf"
