@@ -8,8 +8,8 @@ from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFont
 from pyrogram import enums, filters
 from pyrogram.types import ChatMemberUpdated
 import config
-from Shigaraki import app
-from Shigaraki.utils.database import get_assistant
+from AnieXEricaMusic import app
+from AnieXEricaMusic.utils.database import get_assistant
 from PIL import Image, ImageDraw, ImageFont, ImageEnhance, ImageChops
 from pyrogram import filters
 from pyrogram.types import ChatMemberUpdated, InlineKeyboardMarkup, InlineKeyboardButton
@@ -199,21 +199,21 @@ async def greet_new_members(_, member: ChatMemberUpdated):
                 users_photo = await app.download_media(
                     user.photo.big_file_id, file_name=f"pp{user.id}.png"
                 )
-                user_photo = users_photo if users_photo else "assets/nodp.png"
+                user_photo = users_photo if users_photo else "assets/upic.png"
             except AttributeError:
-                user_photo = "assets/nodp.png"
+                user_photo = "assets/upic.png"
             
             try:
                 groups_photo = await app.download_media(
                     member.chat.photo.big_file_id, file_name=f"chatpp{chat_id}.png"
                 )
-                chat_photo = groups_photo if groups_photo else "assets/nodp.png"
+                chat_photo = groups_photo if groups_photo else "assets/cppic.png"
             except AttributeError:
-                chat_photo = "assets/nodp.png"
+                chat_photo = "assets/cppic.png"
             
             welcomeimg = welcomepic(user_id, user_username, user_names, chat_name, user_photo, chat_photo)
             reply_markup = InlineKeyboardMarkup(
-                [[InlineKeyboardButton(f"{convert_to_small_caps('๏ add me in new group ๏')}", url=f"https://t.me/{app.username}?startgroup=true")]]
+                [[InlineKeyboardButton(f"{convert_to_small_caps('๏ ᴀᴅᴅ ᴍᴇ ɪɴ ɴᴇᴡ ɢʀᴏᴜᴩ ๏')}", url=f"https://t.me/{app.username}?startgroup=true")]]
             )
 
             if (temp.MELCOW).get(f"welcome-{member.chat.id}") is not None:
