@@ -1,20 +1,45 @@
 from pyrogram import Client, filters
-from pyrogram.types import Message, ChatMemberUpdated
+from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
-app = Client("my_bot")  # Replace with your actual app instance if different
+from AnieXEricaMusic import app  # change to your bot's import if needed
 
-WELCOME_TEXT = "ʜᴇʏ ᴡᴇʟᴄᴏᴍᴇ 🌷, {mention}!\nʜᴏᴩᴇ ʏᴏᴜ ᴇɴᴊᴏʏ ʜᴇʀᴇ!"
-GOODBYE_TEXT = "👀 ɢᴏᴏᴅʙʏᴇ, {name}.\nᴡᴇ ʜᴏᴩᴇ ᴛᴏ ꜱᴇᴇ ʏᴏᴜ ᴀɢᴀɪɴ!"
+# Welcome message
+@app.on_message(filters.new_chat_members)
+async def welcome(_, message: Message):
+    for member in message.new_chat_members:
+        await message.reply_photo(
+            photo="https://files.catbox.moe/wvrrlg.jpg",
+            caption=f"""───•❉᯽❉•───
+❁ 𝐇𝐄𝐘 ━ {member.mention} •  
+𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 {.chatname} ✨
 
-# Welcome message on new member join
-@app.on_chat_member_updated()
-async def welcome_handler(client: Client, update: ChatMemberUpdated):
-    if update.new_chat_member.status == "member" and update.old_chat_member.status != "member":
-        mention = update.new_chat_member.user.mention
-        text = WELCOME_TEXT.format(mention=mention)
-        await app.send_message(chat_id=update.chat.id, text=text)
+➻ 𝐌𝐀𝐊𝐄 𝐍𝐄𝗪 𝐅𝐑𝐈𝐄𝐍𝐃𝐒 & 𝐒𝐓𝐀𝐘 𝐀𝐂𝐓𝐈𝐕𝐄 🌷✨
+───•❉᯽❉•───""",
+            reply_markup=InlineKeyboardMarkup(
+                [
+                  InlineKeyboardButton("ꜱᴜᴩᴩᴏʀᴛ", url="https://t.me/+C0s3qb7sRZA0ZjRk")
+                    ],
+                    [
+                        InlineKeyboardButton("ᴏᴡɴᴇʀ", url="https://t.me/YukiharaHiroto")
+                    ]
+                ]
+            )
+        )
 
-    elif update.new_chat_member.status in ["left", "kicked"]:
-        name = update.new_chat_member.user.first_name
-        text = GOODBYE_TEXT.format(name=name)
-        await app.send_message(chat_id=update.chat.id, text=text)
+# Goodbye message
+@app.on_message(filters.left_chat_member)
+async def goodbye(_, message: Message):
+    left_member = message.left_chat_member
+    await message.reply_text(
+        f"""😢 {left_member.mention} ᴊᴜꜱᴛ ʟᴇꜰᴛ ᴛʜᴇ ɢʀᴏᴜᴩ...
+ᴡᴇ'ʟʟ ᴍɪꜱꜱ ʏᴏᴜ 💔
+
+❁ ꜱᴛᴀʏ ᴄᴏɴɴᴇᴄᴛᴇᴅ ᴡɪᴛʜ ᴜꜱ — {.chatname}""",
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton("ᴀᴅᴅ ᴍᴇ", url="https://t.me/YukiMusiXbot")
+                ]
+            ]
+        )
+    )
