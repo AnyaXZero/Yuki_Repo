@@ -13,7 +13,6 @@ from AnieXEricaMusic.utils.database import get_assistant
 from PIL import Image, ImageDraw, ImageFont, ImageEnhance, ImageChops
 from pyrogram import filters
 from pyrogram.types import ChatMemberUpdated, InlineKeyboardMarkup, InlineKeyboardButton
-from pytz import timezone
 from datetime import datetime
 from pymongo import MongoClient
 from config import MONGO_DB_URI
