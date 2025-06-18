@@ -18,9 +18,9 @@ from AnieXEricaMusic import app
 
 def mention(user, name, mention=True):
     if mention == True:
-        link = f"{name},(tg://user?id={user_id}) "
+        link = f"{name}(tg://user?id={user_id}) "
     else:
-        link = f"{name},(tg://user?id={user_id}) "
+        link = f"{name}(tg://user?id={user_id}) "
     return link
 
 
