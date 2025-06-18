@@ -18,17 +18,20 @@ Usage hints, duplicate‑state checks, and safe RPC handling throughout.
 -------------------------------------------------------------------------
 """
 
-import asyncio
-import datetime as dt
-from typing import Optional
-
 from pyrogram import filters, enums
-from pyrogram.errors import ChatAdminRequired, UserAdminInvalid, UserNotParticipant, RPCError
-from pyrogram.types import Message, ChatPermissions
+from pyrogram.types import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    ChatPermissions
+)
+from pyrogram.errors.exceptions.bad_request_400 import (
+    ChatAdminRequired,
+    UserAdminInvalid,
+    BadRequest
+)
 
-from AnieXEricaMusic import app
-from AnieXEricaMusic.utils.decorator import admin_required
-from AnieXEricaMusic.utils.permissions import extract_user_and_reason, mention, parse_time
+import datetime
+from AnieXEricaMusic.core.call import app
 
 # ────────────────────────────────────────────────────────────
 # Constants & Helpers
