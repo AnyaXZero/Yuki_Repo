@@ -16,7 +16,7 @@ from AnieXEricaMusic.core.call import app
 
 
 
-def _format_success(action: str, msg: Message, uid: int, name: str, reason: Optional[str]) -> str:
+def _format_success(action: str, uid: int, name: str, reason: Optional[str]) -> str:
     chat = msg.chat.title
     user_m  = mention(uid, name)
     admin_m = mention(msg.from_user.id, msg.from_user.first_name)
