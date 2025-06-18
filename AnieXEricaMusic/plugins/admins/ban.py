@@ -18,9 +18,9 @@ from AnieXEricaMusic import app
 
 def mention(user, name, mention=True):
     if mention == True:
-        link = f"{user_mention} "
+        link = f"[{name}](https://t.me/={user})"
     else:
-        link = f"{user_mention} "
+        link = f"[{name}](https://t.me/={user})"
     return link
 
 
