@@ -16,12 +16,18 @@ from AnieXEricaMusic.core.call import app
 
 
 
-def mention(user, name, mention=True):
-    if mention == True:
-        link = f"{mention}"
-    else:
-        link = f"{mention}"
-    return link
+def _format_success(action: str, msg: Message, uid: int, name: str, reason: Optional[str]) -> str:
+    chat = msg.chat.title
+    user_m  = mention(uid, name)
+    admin_m = mention(msg.from_user.id, msg.from_user.first_name)
+    text = (
+        f"» {action} ᴀ ᴜsᴇʀ ɪɴ {chat}\n"
+        f" ᴜsᴇʀ  : {user_m}\n"
+        f" ᴀᴅᴍɪɴ : {admin_m}"
+    )
+    if reason:
+        text += f"\nReason: {reason}"
+    return text
 
 
 
