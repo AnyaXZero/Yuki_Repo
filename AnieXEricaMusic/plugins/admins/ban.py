@@ -18,7 +18,7 @@ from AnieXEricaMusic.core.call import app
 
 def mention(user, name, mention=True):
     if mention == True:
-        link = f"[{name}]({user})"
+        link = f"[{name}]({id})"
     else:
         link = f"[{name}]{user})"
     return link
