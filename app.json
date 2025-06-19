@@ -56,7 +56,7 @@
     },
     "HEROKU_API_KEY": {
       "description": "Your Heroku account's API key",
-      "value": "HRKU-AA5DN1qAs5A9A42MDd_gRIvcP5e15YTpWZ8nXVvDsdNw_____wPkb01lB0Gk",
+      "value": "HRKU-AA5DN1qAs5A9A42MDd_gRIvcP5e15YTpWZ8nXVvDsdNw_wPkb01lB0Gk",
       "required": false
     },
     "HEROKU_APP_NAME": {
@@ -66,7 +66,7 @@
     },
     "UPSTREAM_REPO": {
       "description": "If you dont know this, Leave as it is",
-      "value": "https://github.com/SONGSONG220/AnieXEricaMusic",
+      "value": "https://github.com/AnyaXZero/Yuki_Repo",
       "required": false
     },
     "UPSTREAM_BRANCH": {
