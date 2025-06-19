@@ -4,7 +4,7 @@ from pyrogram.errors import ChatAdminRequired, UserAdminInvalid
 from AnieXEricaMusic import app  # Replace with your actual client import
 
 def mention(user_id, name):
-    return f"[{name}](tg://user?id={user_id})"
+    return f"{mention(user_id, user_name)}"
 
 @app.on_message(filters.command("ban") & filters.group)
 async def ban_user(client, message: Message):
