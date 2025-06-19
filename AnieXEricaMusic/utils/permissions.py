@@ -6,8 +6,8 @@ from pyrogram.enums import ChatMemberStatus, ChatMembersFilter
 from pyrogram.types import Message, User
 from pyrogram.errors import RPCError
 
-from ANNIEMUSIC.misc import SUDOERS
-from ANNIEMUSIC.logging import LOGGER
+from AnieXEricaMusic.misc import SUDOERS
+from AnieXEricaMusic.logging import LOGGER
 
 
 # ────────────────────────────────────────────────────────────
