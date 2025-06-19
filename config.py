@@ -87,3 +87,4 @@ if SUPPORT_GROUP:
             "[ERROR] - Your SUPPORT_GROUP url is wrong. Please ensure that it starts with https://"
         )
 COMMAND_PREFIXES = ["/", "!", "."]
+BOT_USERNAME = getenv("BOT_USERNAME", "YukiMusicXbot")
