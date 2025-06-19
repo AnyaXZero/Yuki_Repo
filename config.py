@@ -14,6 +14,8 @@ BOT_TOKEN = getenv("BOT_TOKEN", "7711734310:AAGZgPru-6Trx1tbeBfWmBjKUwp9qk020fs"
 MONGO_DB_URI = getenv("MONGO_DB_URI", "mongodb+srv://YukiMusic:Yukimusicbot@cluster0.mvqpp8v.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 
 DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", 600))
+BOT_USERNAME = getenv("BOT_USERNAME", "shivang_mishra_op")
+BOT_NAME = getenv("BOT_NAME", " 𝙼ᴜsɪᴄ˼ ♪")
 
 LOG_GROUP_ID = int(getenv("LOG_GROUP_ID",-1002567836754))
 
