@@ -7,7 +7,7 @@ from pyrogram.types import Message, User
 from pyrogram.errors import RPCError
 
 from AnieXEricaMusic.misc import SUDOERS
-from AnieXEricaMusic.logging import LOGGER
+from AnieXEricaMusic.utils import Logger
 
 
 # ────────────────────────────────────────────────────────────
