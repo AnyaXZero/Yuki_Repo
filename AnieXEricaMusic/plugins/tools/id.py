@@ -2,7 +2,7 @@ from pyrogram import filters
 from pyrogram.enums import ParseMode
 from pyrogram.types import Message
 
-from ANNIEMUSIC import app
+from AnieXEricaMusic import app
 
 
 @app.on_message(filters.command('id'))
