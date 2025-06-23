@@ -45,7 +45,7 @@ async def safe_photo(uid: int, name: str):
 
 
 async def generate_image(chat_id: int, uid1: int, uid2: int, date: str) -> str:
-    base = Image.open("AnieXEricaMusic/assets/annie/ANNIECP.png")
+    base = Image.open("AnieXEricaMusic/assets/ANNIECP.png")
     p1   = await safe_photo(uid1, "pfp1.png")
     p2   = await safe_photo(uid2, "pfp2.png")
 
