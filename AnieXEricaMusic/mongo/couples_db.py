@@ -1,4 +1,4 @@
-from ANNIEMUSIC.utils.mongo import coupledb
+from AnieXEricaMusic.utils.mongo import coupledb
 
 
 async def _doc(cid: int) -> dict:
