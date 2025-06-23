@@ -49,8 +49,8 @@ async def generate_image(chat_id: int, uid1: int, uid2: int, date: str) -> str:
     p1   = await safe_photo(uid1, "pfp1.png")
     p2   = await safe_photo(uid2, "pfp2.png")
 
-    base.paste(circular(p1), (410, 500), circular(p1))
-    base.paste(circular(p2), (1395, 500), circular(p2))
+    base.paste(circular(p1), (235, 175), circular(p1))
+    base.paste(circular(p2), (1190, 500), circular(p2))
 
     out_path = f"couple_{chat_id}_{date.replace('/','-')}.png"
     base.save(out_path)
