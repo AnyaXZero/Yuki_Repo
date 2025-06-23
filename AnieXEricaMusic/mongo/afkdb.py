@@ -1,7 +1,7 @@
 import threading
 
-from AnieXEricaMusic import BASE, SESSION
-from sqlalchemy import Boolean, Column, BigInteger, UnicodeText
+from AnieXEricaMusic.Mongo.afkdb import BASE, SESSION
+from AnieXEricaMusic import Boolean, Column, BigInteger, UnicodeText
 
 
 class AFK(BASE):
