@@ -1,284 +1,188 @@
-import asyncio
-import re
-import time
-from logging import getLogger
-from time import time
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFont
+import os
+from datetime import datetime, timedelta, timezone
+
+from PIL import Image, ImageDraw, ImageFont
 from pyrogram import enums, filters
-from pyrogram.types import ChatMemberUpdated
-import config
-from AnieXEricaMusic import app
-from AnieXEricaMusic.utils.database import get_assistant
-from PIL import Image, ImageDraw, ImageFont, ImageEnhance, ImageChops
-from pyrogram import filters
-from pyrogram.types import ChatMemberUpdated, InlineKeyboardMarkup, InlineKeyboardButton
-from datetime import datetime
-from pymongo import MongoClient
-from config import MONGO_DB_URI
+from pyrogram.types import (
+    Message, ChatMemberUpdated,
+    InlineKeyboardMarkup, InlineKeyboardButton
+)
 
-user_last_message_time = {}
-user_command_count = {}
-SPAM_THRESHOLD = 2
-SPAM_WINDOW_SECONDS = 5
+from ANNIEMUSIC import app
 
-# --------------------------------------------------------------------------------- #
+# ─────────────────────────────
+# CONFIG
+# ─────────────────────────────
+BG_PATH      = "ANNIEMUSIC/assets/annie/AnnieNwel.png"
+FALLBACK_PIC = "ANNIEMUSIC/assets/upic.png"
+FONT_PATH    = "ANNIEMUSIC/assets/annie/ArialReg.ttf"
+BTN_VIEW     = "๏ ᴠɪᴇᴡ ɴᴇᴡ ᴍᴇᴍʙᴇʀ ๏"
+BTN_ADD      = "๏ ᴋɪᴅɴᴀᴘ ᴍᴇ ๏"
 
+CAPTION_TXT = """
+**❅────✦ ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ✦────❅
+{chat_title}
+▰▰▰▰▰▰▰▰▰▰▰▰▰
+➻ Nᴀᴍᴇ ✧ {mention}
+➻ Iᴅ ✧ `{uid}`
+➻ Usᴇʀɴᴀᴍᴇ ✧ @{uname}
+➻ Tᴏᴛᴀʟ Mᴇᴍʙᴇʀs ✧ {count}
+▰▰▰▰▰▰▰▰▰▰▰▰▰**
+**❅─────✧❅✦❅✧─────❅**
+"""
 
-LOGGER = getLogger(__name__)
+JOIN_THRESHOLD = 10
+TIME_WINDOW    = 8
+COOL_MINUTES   = 10
+WELCOME_LIMIT  = 10
 
-def convert_to_small_caps(text):
-    # Mapping for regular letters to small caps
-    mapping = str.maketrans(
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
-        "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘϙʀꜱᴛᴜᴠᴡxʏᴢᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘϙʀꜱᴛᴜᴠᴡxʏᴢ",
-    )
-    return text.translate(mapping)
+# ─────────────────────────────
+# DATABASE
+# ─────────────────────────────
+class _WelDB:
+    def __init__(self):
+        self.state = {}
+        self.join_cnt = {}
+        self.last_ts = {}
+        self.cool_until = {}
 
+    async def is_on(self, cid): return self.state.get(cid, "on") == "on"
+    async def set(self, cid, flag): self.state[cid] = flag
 
-class temp:
-    ME = None
-    CURRENT = 2
-    CANCEL = False
-    MELCOW = {}
-    U_NAME = None
-    B_NAME = None
+    async def bump(self, cid):
+        now = datetime.now(timezone.utc)
+        last = self.last_ts.get(cid, now - timedelta(seconds=TIME_WINDOW + 1))
+        cnt = 1 if (now - last).total_seconds() > TIME_WINDOW else self.join_cnt.get(cid, 0) + 1
+        self.join_cnt[cid] = cnt
+        self.last_ts[cid] = now
+        return cnt
 
+    async def cool(self, cid):
+        await self.set(cid, "off")
+        self.cool_until[cid] = datetime.now(timezone.utc) + timedelta(minutes=COOL_MINUTES)
 
-def circle(pfp, size=(80, 80), brightness_factor=10):
-    pfp = pfp.resize(size, Image.Resampling.LANCZOS).convert("RGBA")
-    pfp = ImageEnhance.Brightness(pfp).enhance(brightness_factor)
-    bigsize = (pfp.size[0] * 3, pfp.size[1] * 3)
-    mask = Image.new("L", bigsize, 0)
-    draw = ImageDraw.Draw(mask)
-    draw.ellipse((0, 0) + bigsize, fill=255)
-    mask = mask.resize(pfp.size, Image.Resampling.LANCZOS)
-    mask = ImageChops.darker(mask, pfp.split()[-1])
-    pfp.putalpha(mask)
-    
-    
-    border_size_violet = 5
-    border_size_blue = 3   
-    outline = Image.new("RGBA", (pfp.size[0] + 2 * border_size_violet, pfp.size[1] + 2 * border_size_violet), (0, 0, 0, 0))
-    outline_draw = ImageDraw.Draw(outline)
-    
-    violet = (148, 0, 211, 255)  
-    blue = (0, 0, 255, 255)      
-    green = (19, 136, 8, 255)    
-    
-    outline_draw.ellipse((0, 0, outline.size[0], outline.size[1]), outline=violet, width=border_size_violet)
-    outline_draw.ellipse((border_size_violet - border_size_blue, border_size_violet - border_size_blue,
-                          outline.size[0] - (border_size_violet - border_size_blue),
-                          outline.size[1] - (border_size_violet - border_size_blue)), 
-                          outline=blue, width=border_size_blue)
+    async def auto_on(self, cid):
+        ts = self.cool_until.get(cid)
+        if ts and datetime.now(timezone.utc) >= ts:
+            await self.set(cid, "on")
+            self.cool_until.pop(cid, None)
+            return True
+        return False
 
-    
-    outline_draw.ellipse((border_size_violet, border_size_violet,
-                          outline.size[0] - border_size_violet,
-                          outline.size[1] - border_size_violet), 
-                          outline=green, width=border_size_violet)
+db = _WelDB()
+last_messages: dict[int, list] = {}
 
-    outline.paste(pfp, (border_size_violet, border_size_violet), pfp)
-    
-    return outline
+# ─────────────────────────────
+# IMAGE UTILS
+# ─────────────────────────────
+def _circle(im, size=(835, 839)):
+    im = im.resize(size, Image.LANCZOS).convert("RGBA")
+    mask = Image.new("L", size, 0)
+    ImageDraw.Draw(mask).ellipse((0, 0, *size), fill=255)
+    im.putalpha(mask)
+    return im
 
-def welcomepic(user_id, user_username, user_names, chat_name, user_photo, chat_photo):
-    background = Image.open("assets/cppic.png")
-    user_img = Image.open(user_photo).convert("RGBA")
-    chat_img = Image.open(chat_photo).convert("RGBA")
-    
-    chat_img_circle = circle(chat_img, size=(240, 240), brightness_factor=1.2)
-    user_img_circle = circle(user_img, size=(232, 232), brightness_factor=1.2)
-    
-    background.paste(chat_img_circle, (270, 260), chat_img_circle)
-    background.paste(user_img_circle, (827, 260), user_img_circle)
-    
-    draw = ImageDraw.Draw(background)
-    font = ImageFont.truetype("assets/font.ttf", size=32)
+def build_pic(av, fn, uid, un):
+    bg = Image.open(BG_PATH).convert("RGBA")
+    avatar = _circle(Image.open(av))
+    bg.paste(avatar, (1887, 390), avatar)
+    draw = ImageDraw.Draw(bg)
+    font = ImageFont.truetype(FONT_PATH, 65)
+    draw.text((421, 715), fn, fill=(242, 242, 242), font=font)
+    draw.text((270, 1005), str(uid), fill=(242, 242, 242), font=font)
+    draw.text((570, 1308), un, fill=(242, 242, 242), font=font)
+    path = f"downloads/welcome_{uid}.png"
+    bg.save(path)
+    return path
 
-  
-    saffron = (255, 153, 51)  
-    white = (255, 255, 255)   
-    green = (19, 136, 8)
+# ─────────────────────────────
+# TOGGLE COMMAND
+# ─────────────────────────────
+@app.on_message(filters.command("welcome") & filters.group)
+async def toggle(client, m: Message):
+    usage = "**Usage:**\n⦿/welcome [on|off]\n➤ Annie Special Welcome....."
+    if len(m.command) != 2:
+        return await m.reply_text(usage)
 
-    draw.text((510, 517), f"Name:  {user_names}", fill=saffron, font=font)
-    draw.text((510, 547), f"User Id:  {user_id}", fill=white, font=font)
-    draw.text((510, 580), f"Username:  {user_username}", fill=green, font=font)
-    
-    background.save(f"downloads/welcome#{user_id}.png")
-    return f"downloads/welcome#{user_id}.png"
+    u = await client.get_chat_member(m.chat.id, m.from_user.id)
+    if u.status not in (enums.ChatMemberStatus.ADMINISTRATOR, enums.ChatMemberStatus.OWNER):
+        return await m.reply_text("**sᴏʀʀʏ ᴏɴʟʏ ᴀᴅᴍɪɴs ᴄᴀɴ ᴄʜᴀɴɢᴇ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ sᴛᴀᴛᴜs!**")
 
-welcomedb = MongoClient(MONGO_DB_URI)
-status_db = welcomedb.welcome_status_db.status
+    flag = m.command[1].lower()
+    if flag not in ("on", "off"):
+        return await m.reply_text(usage)
 
-async def get_welcome_status(chat_id):
-    status = status_db.find_one({"chat_id": chat_id})
-    if status:
-        return status.get("welcome", "on")
-    return "on"
+    cur = await db.is_on(m.chat.id)
+    if flag == "off" and not cur:
+        return await m.reply_text("**ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ᴀʟʀᴇᴀᴅʏ ᴅɪsᴀʙʟᴇᴅ!**")
+    if flag == "on" and cur:
+        return await m.reply_text("**ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ᴀʟʀᴇᴀᴅʏ ᴇɴᴀʙʟᴇᴅ!**")
 
-async def set_welcome_status(chat_id, state):
-    status_db.update_one(
-        {"chat_id": chat_id},
-        {"$set": {"welcome": state}},
-        upsert=True
-    )
+    await db.set(m.chat.id, flag)
+    await m.reply_text(f"**{'ᴇɴᴀʙʟᴇᴅ' if flag == 'on' else 'ᴅɪsᴀʙʟᴇᴅ'} ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ɪɴ {m.chat.title}**")
 
-@app.on_message(filters.command("welcome") & ~filters.private)
-async def auto_state(_, message):
-    user_id = message.from_user.id
-    current_time = time()
-
-    last_message_time = user_last_message_time.get(user_id, 0)
-    if current_time - last_message_time < SPAM_WINDOW_SECONDS:
-        user_last_message_time[user_id] = current_time
-        user_command_count[user_id] = user_command_count.get(user_id, 0) + 1
-        if user_command_count[user_id] > SPAM_THRESHOLD:
-            hu = await message.reply_text(
-                f"**{message.from_user.mention} ᴘʟᴇᴀsᴇ ᴅᴏɴᴛ ᴅᴏ sᴘᴀᴍ, ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ ᴀғᴛᴇʀ 5 sᴇᴄ**"
-            )
-            await asyncio.sleep(3)
-            await hu.delete()
-            return
-    else:
-        user_command_count[user_id] = 1
-        user_last_message_time[user_id] = current_time
-
-    usage = "**ᴜsᴀɢᴇ:**\n**⦿ /welcome [on|off]**"
-    if len(message.command) == 1:
-        return await message.reply_text(usage)
-
-    chat_id = message.chat.id
-    user = await app.get_chat_member(message.chat.id, message.from_user.id)
-    if user.status in (enums.ChatMemberStatus.ADMINISTRATOR, enums.ChatMemberStatus.OWNER):
-        state = message.text.split(None, 1)[1].strip().lower()
-        current_status = await get_welcome_status(chat_id)
-
-        if state == "off":
-            if current_status == "off":
-                await message.reply_text("** ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ᴀʟʀᴇᴀᴅʏ ᴅɪsᴀʙʟᴇᴅ!**")
-            else:
-                await set_welcome_status(chat_id, "off")
-                await message.reply_text(f"**ᴅɪsᴀʙʟᴇᴅ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ɪɴ** {message.chat.title} **ʙʏ ʙᴏᴛ**")
-        elif state == "on":
-            if current_status == "on":
-                await message.reply_text("**ᴇɴᴀʙʟᴇᴅ ʙᴏᴛ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ᴀʟʀᴇᴀᴅʏ!**")
-            else:
-                await set_welcome_status(chat_id, "on")
-                await message.reply_text(f"**ᴇɴᴀʙʟᴇᴅ ʙᴏᴛ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ɪɴ** {message.chat.title}")
-        else:
-            await message.reply_text(usage)
-    else:
-        await message.reply("**sᴏʀʀʏ ᴏɴʟʏ ᴀᴅᴍɪɴs ᴄᴀɴ ᴇɴᴀʙʟᴇ ʙᴏᴛ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ!**")
-
-@app.on_chat_member_updated(filters.group, group=-4)
-async def greet_new_members(_, member: ChatMemberUpdated):
-    try:
-        chat_id = member.chat.id
-
-        welcome_status = await get_welcome_status(chat_id)
-        if welcome_status == "off":
-            return
-
-        chat = await app.get_chat(chat_id)
-        user = member.new_chat_member.user
-        user_id = user.id
-        user_mention = user.mention
-
-        chat_name = chat.title if chat.title else "Anjan Group"
-        user_username = f"@{user.username}" if user.username else "No Username"
-        user_name = user.first_name if user.first_name else "No Name"
-        user_names = user.first_name if user.first_name and re.match("^[A-Za-z0-9 ]+$", user.first_name) else "New Member"
-       
-        ist = timezone('Asia/Kolkata')
-        joined_time = datetime.now(ist).strftime('%Y-%m-%d %H:%M:%S')
-
-        if member.new_chat_member and not member.old_chat_member:
-            try:
-                users_photo = await app.download_media(
-                    user.photo.big_file_id, file_name=f"pp{user.id}.png"
-                )
-                user_photo = users_photo if users_photo else "assets/upic.png"
-            except AttributeError:
-                user_photo = "assets/upic.png"
-            
-            try:
-                groups_photo = await app.download_media(
-                    member.chat.photo.big_file_id, file_name=f"chatpp{chat_id}.png"
-                )
-                chat_photo = groups_photo if groups_photo else "assets/cppic.png"
-            except AttributeError:
-                chat_photo = "assets/cppic.png"
-            
-            welcomeimg = welcomepic(user_id, user_username, user_names, chat_name, user_photo, chat_photo)
-            reply_markup = InlineKeyboardMarkup(
-                [[InlineKeyboardButton(f"{convert_to_small_caps('๏ ᴀᴅᴅ ᴍᴇ ɪɴ ɴᴇᴡ ɢʀᴏᴜᴩ ๏')}", url=f"https://t.me/{app.username}?startgroup=true")]]
-            )
-
-            if (temp.MELCOW).get(f"welcome-{member.chat.id}") is not None:
-                try:
-                    await temp.MELCOW[f"welcome-{member.chat.id}"].delete()
-                except Exception as e:
-                    LOGGER.error(e)
-
-            welcome_text = (
-                f"**{convert_to_small_caps('ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ')}** {convert_to_small_caps(chat_name)}\n\n"
-                f"**{convert_to_small_caps('ɴᴀᴍᴇ')} :** {convert_to_small_caps(user.first_name)}\n"
-                f"**{convert_to_small_caps('ᴜꜱᴇʀ ɪᴅ')} :** `{user_id}`\n"
-                f"**{convert_to_small_caps('ᴜꜱᴇʀɴᴀᴍᴇ')} :** [{convert_to_small_caps(user_username)}](tg://openmessage?user_id={user_id})\n"
-                f"**{convert_to_small_caps('ᴍᴇɴᴛɪᴏɴ')} :** [ᴏᴘᴇɴ ᴘʀᴏғɪʟᴇ](tg://openmessage?user_id={user_id})\n"
-                f"**{convert_to_small_caps('ᴊᴏɪɴᴇᴅ ᴀᴛ')} :** {convert_to_small_caps(joined_time)}"
-            )
-            await app.send_photo(chat_id, photo=welcomeimg, caption=welcome_text, reply_markup=reply_markup)
-
-    except Exception as e:
-        
+# ─────────────────────────────
+# WELCOME HANDLER
+# ─────────────────────────────
+@app.on_chat_member_updated(filters.group, group=-3)
+async def welcome(client, update: ChatMemberUpdated):
+    old, new, cid = update.old_chat_member, update.new_chat_member, update.chat.id
+    if not (new and new.status == enums.ChatMemberStatus.MEMBER):
+        return
+    if old and old.status in (
+        enums.ChatMemberStatus.MEMBER,
+        enums.ChatMemberStatus.ADMINISTRATOR,
+        enums.ChatMemberStatus.OWNER,
+    ):
         return
 
-__MODULE__ = "Wᴇᴄᴏᴍᴇ"
+    if not await db.is_on(cid):
+        if await db.auto_on(cid):
+            await client.send_message(cid, "**ᴡᴇʟᴄᴏᴍᴇ ᴍᴇssᴀɢᴇs ʜᴀᴠᴇ ʙᴇᴇɴ ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ ʀᴇ-ᴇɴᴀʙʟᴇᴅ.**")
+        else:
+            return
 
-__HELP__ = """
-## Aᴜᴛᴏ-Wᴇᴄᴏᴍᴇ Mᴏᴅᴜʟᴇ Cᴏᴍᴍᴀɴᴅs
+    if await db.bump(cid) >= JOIN_THRESHOLD:
+        await db.cool(cid)
+        return await client.send_message(
+            cid, "**ᴍᴀssɪᴠᴇ ᴊᴏɪɴ ᴅᴇᴛᴇᴄᴛᴇᴅ. ᴡᴇʟᴄᴏᴍᴇ ᴍᴇssᴀɢᴇs ᴀʀᴇ ᴛᴇᴍᴘᴏʀᴀʀɪʟʏ ᴅɪsᴀʙʟᴇᴅ ғᴏʀ 10 ᴍɪɴᴜᴛᴇs.**"
+        )
 
-### Cᴏᴍᴍᴀɴᴅ: /ᴀᴡᴇᴄᴏᴍᴇ
-**Dᴇsᴄʀɪᴘᴛɪᴏɴ:**
-Eɴᴀʙʟᴇs ᴏʀ ᴅɪsᴀʙʟᴇs ᴛʜᴇ ᴀᴜᴛᴏ-ᴡᴇʟᴄᴏᴍᴇ ғᴇᴀᴛᴜʀᴇ ɪɴ ᴀ ɢʀᴏᴜᴘ ᴄʜᴀᴛ.
+    user = new.user
+    avatar = img = None
+    try:
+        avatar = await client.download_media(user.photo.big_file_id, file_name=f"downloads/pp_{user.id}.png") if user.photo else FALLBACK_PIC
+        img = build_pic(avatar, user.first_name, user.id, user.username or "No Username")
 
-**Usᴀɢᴇ:**
-- `/welcome [ᴏɴ|ᴏғғ]` (ғᴏʀ ʙᴏᴛ)
-- `/awelcome [ᴏɴ|ᴏғғ]` (ғᴏʀ ᴀssɪsᴛᴀɴᴛ)
+        members = await client.get_chat_members_count(cid)
+        caption = CAPTION_TXT.format(
+            chat_title=update.chat.title,
+            mention=user.mention,
+            uid=user.id,
+            uname=user.username or "No Username",
+            count=members
+        )
 
-**Dᴇᴛᴀɪʟs:**
-- `ᴏɴ`: Eɴᴀʙʟᴇs ᴀᴜᴛᴏ-ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴs.
-- `ᴏғғ`: Dɪsᴀʙʟᴇs ᴀᴜᴛᴏ-ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴs.
+        sent = await client.send_photo(
+            cid,
+            img,
+            caption=caption,
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton(BTN_VIEW, url=f"tg://openmessage?user_id={user.id}")],
+                [InlineKeyboardButton(BTN_ADD,  url=f"https://t.me/{client.username}?startgroup=true")],
+            ])
+        )
 
-**Nᴏᴛᴇs:**
-- Oɴʟʏ ᴀᴅᴍɪɴɪsᴛʀᴀᴛᴏʀs ᴀɴᴅ ɢʀᴏᴜᴘ ᴏᴡɴᴇʀs ᴄᴀɴ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.
+        last_messages.setdefault(cid, []).append(sent)
+        if len(last_messages[cid]) > WELCOME_LIMIT:
+            old_msg = last_messages[cid].pop(0)
+            try: await old_msg.delete()
+            except: pass
 
----
-
-### Sᴘᴀᴍ Pʀᴏᴛᴇᴄᴛɪᴏɴ
-Pʀᴇᴠᴇɴᴛs ᴄᴏᴍᴍᴀɴᴅ sᴘᴀᴍᴍɪɴɢ.  
-Iғ ᴀ ᴜsᴇʀ sᴇɴᴅs ᴍᴏʀᴇ ᴛʜᴀɴ 2 ᴄᴏᴍᴍᴀɴᴅs ᴡɪᴛʜɪɴ 5 sᴇᴄᴏɴᴅs, ᴛʜᴇʏ ᴡɪʟʟ ʙᴇ ᴡᴀʀɴᴇᴅ ᴀɴᴅ ᴛᴇᴍᴘᴏʀᴀʀɪʟʏ ʙʟᴏᴄᴋᴇᴅ.
-
----
-
-### Wᴇʟᴄᴏᴍᴇ Nᴇᴡ Mᴇᴍʙᴇʀs
-Aᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ sᴇɴᴅs ᴀ ᴡᴇʟᴄᴏᴍᴇ ᴍᴇssᴀɢᴇ ᴛᴏ ɴᴇᴡ ᴍᴇᴍʙᴇʀs ᴡʜᴏ ᴊᴏɪɴ ᴛʜᴇ ɢʀᴏᴜᴘ.
-
-**Bᴇʜᴀᴠɪᴏʀ:**
-- Sᴇɴᴅs ᴀ ᴡᴇʟᴄᴏᴍᴇ ᴍᴇssᴀɢᴇ ᴍᴇɴᴛɪᴏɴɪɴɢ ᴛʜᴇ ɴᴇᴡ ᴜsᴇʀ.
-- Tʜᴇ ᴍᴇssᴀɢᴇ ɪs sᴇɴᴛ ᴀғᴛᴇʀ ᴀ 3-sᴇᴄᴏɴᴅ ᴅᴇʟᴀʏ.
-
----
-
-### Exᴀᴍᴘʟᴇs
-- `/awelcome on`: Eɴᴀʙʟᴇs ᴀᴜᴛᴏ-ᴡᴇʟᴄᴏᴍᴇ.
-- `/awelcome off`: Dɪsᴀʙʟᴇs ᴀᴜᴛᴏ-ᴡᴇʟᴄᴏᴍᴇ.
-
-**Sᴘᴀᴍ Wᴀʀɴɪɴɢ:**
-Iғ ᴀ ᴜsᴇʀ sᴇɴᴅs ᴍᴜʟᴛɪᴘʟᴇ ᴄᴏᴍᴍᴀɴᴅs ǫᴜɪᴄᴋʟʏ,  
-ᴛʜᴇʏ ᴡɪʟʟ ʀᴇᴄᴇɪᴠᴇ ᴀ sᴘᴀᴍ ᴡᴀʀɴɪɴɢ.
-
-# update.effective_message.
-"""
+    except Exception:
+        await client.send_message(cid, f"🎉 Welcome, {user.mention}!")
+    finally:
+        for f in (avatar, img):
+            if f and os.path.exists(f) and "ANNIEMUSIC/assets" not in f:
+                try: os.remove(f)
+                except: pass
