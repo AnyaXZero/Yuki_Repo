@@ -13,9 +13,9 @@ from AnieXEricaMusic import app
 # ─────────────────────────────
 # CONFIG
 # ─────────────────────────────
-BG_PATH      = "AnieXEricaMusic/assets/annie/AnnieNwel.png"
+BG_PATH      = "AnieXEricaMusic/assets/AnnieNwel.png"
 FALLBACK_PIC = "AnieXEricaMusic/assets/upic.png"
-FONT_PATH    = "AnieXEricaMusic/assets/annie/ArialReg.ttf"
+FONT_PATH    = "AnieXEricaMusic/assets/ArialReg.ttf"
 BTN_VIEW     = "๏ ᴠɪᴇᴡ ɴᴇᴡ ᴍᴇᴍʙᴇʀ ๏"
 BTN_ADD      = "๏ ᴋɪᴅɴᴀᴘ ᴍᴇ ๏"
 
