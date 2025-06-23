@@ -1,6 +1,5 @@
 import os
 from datetime import datetime, timedelta, timezone
-
 from PIL import Image, ImageDraw, ImageFont
 from pyrogram import enums, filters
 from pyrogram.types import (
@@ -10,9 +9,7 @@ from pyrogram.types import (
 
 from AnieXEricaMusic import app
 
-# ─────────────────────────────
-# CONFIG
-# ─────────────────────────────
+# ─── CONFIG ───
 BG_PATH      = "AnieXEricaMusic/assets/AnnieNwel.png"
 FALLBACK_PIC = "AnieXEricaMusic/assets/upic.png"
 FONT_PATH    = "AnieXEricaMusic/assets/ArialReg.ttf"
@@ -40,9 +37,8 @@ TIME_WINDOW    = 8
 COOL_MINUTES   = 10
 WELCOME_LIMIT  = 10
 
-# ─────────────────────────────
-# DATABASE
-# ─────────────────────────────
+
+# ─── DATABASE ───
 class _WelDB:
     def __init__(self):
         self.state = {}
@@ -76,9 +72,7 @@ class _WelDB:
 db = _WelDB()
 last_messages: dict[int, list] = {}
 
-# ─────────────────────────────
-# IMAGE UTILS
-# ─────────────────────────────
+# ─── IMAGE GENERATOR ───
 def _circle(im, size=(835, 839)):
     im = im.resize(size, Image.LANCZOS).convert("RGBA")
     mask = Image.new("L", size, 0)
@@ -86,22 +80,34 @@ def _circle(im, size=(835, 839)):
     im.putalpha(mask)
     return im
 
+def draw_fit_text(draw, pos, text, max_width, font_path, start_size=65, fill=(242, 242, 242)):
+    size = start_size
+    font = ImageFont.truetype(font_path, size)
+    while font.getlength(text) > max_width and size > 30:
+        size -= 2
+        font = ImageFont.truetype(font_path, size)
+    draw.text(pos, text, font=font, fill=fill)
+
 def build_pic(av, fn, uid, un):
     bg = Image.open(BG_PATH).convert("RGBA")
-    avatar = _circle(Image.open(av))
+    try:
+        avatar = _circle(Image.open(av))
+    except:
+        avatar = _circle(Image.open(FALLBACK_PIC))
+
     bg.paste(avatar, (1887, 390), avatar)
     draw = ImageDraw.Draw(bg)
-    font = ImageFont.truetype(FONT_PATH, 65)
-    draw.text((421, 715), fn, fill=(242, 242, 242), font=font)
-    draw.text((270, 1005), str(uid), fill=(242, 242, 242), font=font)
-    draw.text((570, 1308), un, fill=(242, 242, 242), font=font)
+
+    draw_fit_text(draw, (421, 715), fn or "Unknown", 1000, FONT_PATH)
+    draw_fit_text(draw, (270, 1005), str(uid),     1000, FONT_PATH)
+    draw_fit_text(draw, (570, 1308), f"@{un}" if un else "No Username", 1000, FONT_PATH)
+
     path = f"downloads/welcome_{uid}.png"
     bg.save(path)
     return path
 
-# ─────────────────────────────
-# TOGGLE COMMAND
-# ─────────────────────────────
+
+# ─── TOGGLE CMD ───
 @app.on_message(filters.command("welcome") & filters.group)
 async def toggle(client, m: Message):
     usage = "Usage:\n⦿/welcome [on|off]\n➤ Annie Special Welcome....."
@@ -110,7 +116,7 @@ async def toggle(client, m: Message):
 
     u = await client.get_chat_member(m.chat.id, m.from_user.id)
     if u.status not in (enums.ChatMemberStatus.ADMINISTRATOR, enums.ChatMemberStatus.OWNER):
-        return await m.reply_text("sᴏʀʀʏ ᴏɴʟʏ ᴀᴅᴍɪɴs ᴄᴀɴ ᴄʜᴀɴɢᴇ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ sᴛᴀᴛᴜs!")
+        return await m.reply_text("Only admins can change welcome status!")
 
     flag = m.command[1].lower()
     if flag not in ("on", "off"):
@@ -118,39 +124,34 @@ async def toggle(client, m: Message):
 
     cur = await db.is_on(m.chat.id)
     if flag == "off" and not cur:
-        return await m.reply_text("ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ᴀʟʀᴇᴀᴅʏ ᴅɪsᴀʙʟᴇᴅ!")
+        return await m.reply_text("Already disabled!")
     if flag == "on" and cur:
-        return await m.reply_text("ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ᴀʟʀᴇᴀᴅʏ ᴇɴᴀʙʟᴇᴅ!")
+        return await m.reply_text("Already enabled!")
 
     await db.set(m.chat.id, flag)
-    await m.reply_text(f"{'ᴇɴᴀʙʟᴇᴅ' if flag == 'on' else 'ᴅɪsᴀʙʟᴇᴅ'} ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ɪɴ {m.chat.title}")
+    await m.reply_text(f"✅ Welcome messages {'enabled' if flag == 'on' else 'disabled'} in {m.chat.title}")
 
-# ─────────────────────────────
-# WELCOME HANDLER
-# ─────────────────────────────
+
+# ─── WELCOME HANDLER ───
 @app.on_chat_member_updated(filters.group, group=-3)
 async def welcome(client, update: ChatMemberUpdated):
     old, new, cid = update.old_chat_member, update.new_chat_member, update.chat.id
-    if not (new and new.status == enums.ChatMemberStatus.MEMBER):
-        return
+    if not (new and new.status == enums.ChatMemberStatus.MEMBER): return
     if old and old.status in (
         enums.ChatMemberStatus.MEMBER,
         enums.ChatMemberStatus.ADMINISTRATOR,
         enums.ChatMemberStatus.OWNER,
-    ):
-        return
+    ): return
 
     if not await db.is_on(cid):
         if await db.auto_on(cid):
-            await client.send_message(cid, "ᴡᴇʟᴄᴏᴍᴇ ᴍᴇssᴀɢᴇs ʜᴀᴠᴇ ʙᴇᴇɴ ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ ʀᴇ-ᴇɴᴀʙʟᴇᴅ.")
+            await client.send_message(cid, "Auto re-enabled welcome messages.")
         else:
             return
 
     if await db.bump(cid) >= JOIN_THRESHOLD:
         await db.cool(cid)
-        return await client.send_message(
-            cid, "ᴍᴀssɪᴠᴇ ᴊᴏɪɴ ᴅᴇᴛᴇᴄᴛᴇᴅ. ᴡᴇʟᴄᴏᴍᴇ ᴍᴇssᴀɢᴇs ᴀʀᴇ ᴛᴇᴍᴘᴏʀᴀʀɪʟʏ ᴅɪsᴀʙʟᴇᴅ ғᴏʀ 10 ᴍɪɴᴜᴛᴇs."
-        )
+        return await client.send_message(cid, "⚠️ Too many joins! Welcome paused for 10 minutes.")
 
     user = new.user
     avatar = img = None
@@ -183,7 +184,7 @@ async def welcome(client, update: ChatMemberUpdated):
             try: await old_msg.delete()
             except: pass
 
-    except Exception:
+    except Exception as e:
         await client.send_message(cid, f"🎉 Welcome, {user.mention}!")
     finally:
         for f in (avatar, img):
