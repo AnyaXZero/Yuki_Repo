@@ -8,27 +8,31 @@ from pyrogram.types import (
     InlineKeyboardMarkup, InlineKeyboardButton
 )
 
-from ANNIEMUSIC import app
+from AnieXEricaMusic import app
 
 # ─────────────────────────────
 # CONFIG
 # ─────────────────────────────
-BG_PATH      = "ANNIEMUSIC/assets/annie/AnnieNwel.png"
-FALLBACK_PIC = "ANNIEMUSIC/assets/upic.png"
-FONT_PATH    = "ANNIEMUSIC/assets/annie/ArialReg.ttf"
+BG_PATH      = "AnieXEricaMusic/assets/annie/AnnieNwel.png"
+FALLBACK_PIC = "AnieXEricaMusic/assets/upic.png"
+FONT_PATH    = "AnieXEricaMusic/assets/annie/ArialReg.ttf"
 BTN_VIEW     = "๏ ᴠɪᴇᴡ ɴᴇᴡ ᴍᴇᴍʙᴇʀ ๏"
 BTN_ADD      = "๏ ᴋɪᴅɴᴀᴘ ᴍᴇ ๏"
 
 CAPTION_TXT = """
-**❅────✦ ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ✦────❅
-{chat_title}
-▰▰▰▰▰▰▰▰▰▰▰▰▰
-➻ Nᴀᴍᴇ ✧ {mention}
-➻ Iᴅ ✧ `{uid}`
-➻ Usᴇʀɴᴀᴍᴇ ✧ @{uname}
-➻ Tᴏᴛᴀʟ Mᴇᴍʙᴇʀs ✧ {count}
-▰▰▰▰▰▰▰▰▰▰▰▰▰**
-**❅─────✧❅✦❅✧─────❅**
+𝐖ᴇʟᴄᴏᴍᴇ ᴛᴏ {chat_title}
+
+───•❉᯽❉•───
+
+❁ 𝐍ᴀᴍᴇ : {mention}
+
+❁ ɪᴅ : {uid}
+
+❁ 𝐔ꜱᴇʀɴᴀᴍᴇ : @{uname}
+
+❁ Tᴏᴛᴀʟ Mᴇᴍʙᴇʀs : {count}
+
+───•❉᯽❉•───
 """
 
 JOIN_THRESHOLD = 10
@@ -100,13 +104,13 @@ def build_pic(av, fn, uid, un):
 # ─────────────────────────────
 @app.on_message(filters.command("welcome") & filters.group)
 async def toggle(client, m: Message):
-    usage = "**Usage:**\n⦿/welcome [on|off]\n➤ Annie Special Welcome....."
+    usage = "Usage:\n⦿/welcome [on|off]\n➤ Annie Special Welcome....."
     if len(m.command) != 2:
         return await m.reply_text(usage)
 
     u = await client.get_chat_member(m.chat.id, m.from_user.id)
     if u.status not in (enums.ChatMemberStatus.ADMINISTRATOR, enums.ChatMemberStatus.OWNER):
-        return await m.reply_text("**sᴏʀʀʏ ᴏɴʟʏ ᴀᴅᴍɪɴs ᴄᴀɴ ᴄʜᴀɴɢᴇ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ sᴛᴀᴛᴜs!**")
+        return await m.reply_text("sᴏʀʀʏ ᴏɴʟʏ ᴀᴅᴍɪɴs ᴄᴀɴ ᴄʜᴀɴɢᴇ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ sᴛᴀᴛᴜs!")
 
     flag = m.command[1].lower()
     if flag not in ("on", "off"):
@@ -114,12 +118,12 @@ async def toggle(client, m: Message):
 
     cur = await db.is_on(m.chat.id)
     if flag == "off" and not cur:
-        return await m.reply_text("**ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ᴀʟʀᴇᴀᴅʏ ᴅɪsᴀʙʟᴇᴅ!**")
+        return await m.reply_text("ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ᴀʟʀᴇᴀᴅʏ ᴅɪsᴀʙʟᴇᴅ!")
     if flag == "on" and cur:
-        return await m.reply_text("**ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ᴀʟʀᴇᴀᴅʏ ᴇɴᴀʙʟᴇᴅ!**")
+        return await m.reply_text("ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ᴀʟʀᴇᴀᴅʏ ᴇɴᴀʙʟᴇᴅ!")
 
     await db.set(m.chat.id, flag)
-    await m.reply_text(f"**{'ᴇɴᴀʙʟᴇᴅ' if flag == 'on' else 'ᴅɪsᴀʙʟᴇᴅ'} ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ɪɴ {m.chat.title}**")
+    await m.reply_text(f"{'ᴇɴᴀʙʟᴇᴅ' if flag == 'on' else 'ᴅɪsᴀʙʟᴇᴅ'} ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ɪɴ {m.chat.title}")
 
 # ─────────────────────────────
 # WELCOME HANDLER
@@ -138,14 +142,14 @@ async def welcome(client, update: ChatMemberUpdated):
 
     if not await db.is_on(cid):
         if await db.auto_on(cid):
-            await client.send_message(cid, "**ᴡᴇʟᴄᴏᴍᴇ ᴍᴇssᴀɢᴇs ʜᴀᴠᴇ ʙᴇᴇɴ ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ ʀᴇ-ᴇɴᴀʙʟᴇᴅ.**")
+            await client.send_message(cid, "ᴡᴇʟᴄᴏᴍᴇ ᴍᴇssᴀɢᴇs ʜᴀᴠᴇ ʙᴇᴇɴ ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ ʀᴇ-ᴇɴᴀʙʟᴇᴅ.")
         else:
             return
 
     if await db.bump(cid) >= JOIN_THRESHOLD:
         await db.cool(cid)
         return await client.send_message(
-            cid, "**ᴍᴀssɪᴠᴇ ᴊᴏɪɴ ᴅᴇᴛᴇᴄᴛᴇᴅ. ᴡᴇʟᴄᴏᴍᴇ ᴍᴇssᴀɢᴇs ᴀʀᴇ ᴛᴇᴍᴘᴏʀᴀʀɪʟʏ ᴅɪsᴀʙʟᴇᴅ ғᴏʀ 10 ᴍɪɴᴜᴛᴇs.**"
+            cid, "ᴍᴀssɪᴠᴇ ᴊᴏɪɴ ᴅᴇᴛᴇᴄᴛᴇᴅ. ᴡᴇʟᴄᴏᴍᴇ ᴍᴇssᴀɢᴇs ᴀʀᴇ ᴛᴇᴍᴘᴏʀᴀʀɪʟʏ ᴅɪsᴀʙʟᴇᴅ ғᴏʀ 10 ᴍɪɴᴜᴛᴇs."
         )
 
     user = new.user
@@ -183,6 +187,6 @@ async def welcome(client, update: ChatMemberUpdated):
         await client.send_message(cid, f"🎉 Welcome, {user.mention}!")
     finally:
         for f in (avatar, img):
-            if f and os.path.exists(f) and "ANNIEMUSIC/assets" not in f:
+            if f and os.path.exists(f) and "AnieXEricaMusic/assets" not in f:
                 try: os.remove(f)
                 except: pass
