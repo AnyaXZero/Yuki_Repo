@@ -2,7 +2,7 @@ from AnieXEricaMusic.core.bot import AMBOT
 from AnieXEricaMusic.core.dir import dirr
 from AnieXEricaMusic.core.git import git
 from AnieXEricaMusic.core.userbot import Userbot
-from AnieXEricaMusic.misc.dbb import db
+from AnieXEricaMusic.misc.db import db
 from .logging import LOGGER
 
 dirr()
