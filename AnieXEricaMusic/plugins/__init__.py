@@ -1,3 +1,6 @@
+import glob
+from os.path import dirname, isfile
+
 def __list_all_modules():
     work_dir = dirname(__file__)
     mod_paths = glob.glob(work_dir + "/*.py") 
