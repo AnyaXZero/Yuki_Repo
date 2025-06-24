@@ -2,8 +2,8 @@ import os
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from pyrogram.errors import FloodWait
-from ANNIEMUSIC import app
-from ANNIEMUSIC.misc import SUDOERS
+from AnieXEricaMusic import app
+from AnieXEricaMusic.misc import SUDOERS
 
 
 @app.on_message(filters.command("givelink"))
@@ -11,7 +11,7 @@ async def give_link_command(client: Client, message: Message):
     try:
         link = await app.export_chat_invite_link(message.chat.id)
         await message.reply_text(
-            f"🔗 **ɪɴᴠɪᴛᴇ ʟɪɴᴋ ғᴏʀ** `{message.chat.title}`:\n{link}"
+            f"🔗 ɪɴᴠɪᴛᴇ ʟɪɴᴋ ғᴏʀ `{message.chat.title}`:\n{link}"
         )
     except Exception as e:
         await message.reply_text(f"❌ ᴇʀʀᴏʀ ɢᴇɴᴇʀᴀᴛɪɴɢ ʟɪɴᴋ:\n`{e}`")
@@ -20,7 +20,7 @@ async def give_link_command(client: Client, message: Message):
 @app.on_message(filters.command(["link", "invitelink"], prefixes=["/", "!", ".", "#", "?"]) & SUDOERS)
 async def link_command_handler(client: Client, message: Message):
     if len(message.command) != 2:
-        return await message.reply("**ᴜsᴀɢᴇ:** `/link <group_id>`")
+        return await message.reply("ᴜsᴀɢᴇ: `/link <group_id>`")
 
     group_id = message.command[1]
     file_name = f"group_info_{group_id}.txt"
@@ -28,7 +28,7 @@ async def link_command_handler(client: Client, message: Message):
     try:
         chat = await client.get_chat(int(group_id))
         if not chat:
-            return await message.reply("⚠️ **ᴄᴏᴜʟᴅ ɴᴏᴛ ғᴇᴛᴄʜ ɢʀᴏᴜᴘ ɪɴғᴏ.**")
+            return await message.reply("⚠️ ᴄᴏᴜʟᴅ ɴᴏᴛ ғᴇᴛᴄʜ ɢʀᴏᴜᴘ ɪɴғᴏ.")
 
         try:
             invite_link = await client.export_chat_invite_link(chat.id)
@@ -59,8 +59,8 @@ async def link_command_handler(client: Client, message: Message):
             chat_id=message.chat.id,
             document=file_name,
             caption=(
-                f"📂 **ɢʀᴏᴜᴘ ɪɴғᴏ ꜰᴏʀ** `{chat.title}`\n"
-                f"📌 **sᴄʀᴀᴘᴇᴅ ʙʏ:** @{app.username}"
+                f"📂 ɢʀᴏᴜᴘ ɪɴғᴏ ꜰᴏʀ `{chat.title}`\n"
+                f"📌 ꜱᴄʀᴀᴘᴇᴅ ʙʏ: @{app.username}"
             ),
         )
 
