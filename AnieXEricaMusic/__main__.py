@@ -37,7 +37,7 @@ async def init():
     await app.start()
     for all_module in ALL_MODULES:
         try:
-            importlib.import_module("AnieXEricaMusic.plugins" + "all_module")
+            importlib.import_module("AnieXEricaMusic.plugins" + all_module)
         except Exception as e:
             LOGGER(__name__).warning(f"Error importing module {all_module}: {str(e)}")
 
