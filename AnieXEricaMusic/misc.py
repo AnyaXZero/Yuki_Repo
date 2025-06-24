@@ -23,7 +23,7 @@ XCB = [
     "HEAD", "master"
 ]
 
-def dbb():
+def db():
     global db
     db = {}
     LOGGER(__name__).info("ᴅᴀᴛᴀʙᴀsᴇ ʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ💗")
