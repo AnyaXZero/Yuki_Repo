@@ -100,5 +100,3 @@ async def whois_handler(_, message: Message):
         await message.reply(f"⚠️ ʀᴘᴄ ᴇʀʀᴏʀ:\n<code>{e}</code>")
     except Exception as e:
         await message.reply(f"🥀 ᴇʀʀᴏʀ:\n<code>{e}</code>")
-
-    
