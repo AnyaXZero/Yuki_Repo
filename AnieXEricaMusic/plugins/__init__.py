@@ -1,6 +1,6 @@
 def __list_all_modules():
     work_dir = dirname(__file__)
-    mod_paths = glob.glob(work_dir + "/*.py")  # केवल plugins के अंदर की फाइलें
+    mod_paths = glob.glob(work_dir + "/*.py") 
 
     all_modules = [
         (f.replace(work_dir + "/", "").replace(".py", ""))
