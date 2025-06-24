@@ -7,10 +7,10 @@ from datetime import datetime
 import aiofiles
 from pyrogram.errors.exceptions.forbidden_403 import ChatWriteForbidden
 
-from ANNIEMUSIC import app
+from AnieXEricaMusic import app
 from config import LOGGER_ID, DEBUG_IGNORE_LOG
-from ANNIEMUSIC.utils.exceptions import is_ignored_error
-from ANNIEMUSIC.utils.pastebin import ANNIEBIN
+from AnieXEricaMusic.utils.exceptions import is_ignored_error
+from AnieXEricaMusic.utils.pastebin import ANNIEBIN
 
 
 DEBUG_LOG_FILE = "ignored_errors.log"
