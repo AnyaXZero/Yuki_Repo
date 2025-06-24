@@ -86,59 +86,57 @@ async def anime_info(client: Client, message: Message):
             parse_mode=ParseMode.MARKDOWN
         )
 
-    # Extracting fields
-    title = result['title']['romaji']
+    # Extract fields safely
+    title = result['title'].get('romaji', 'N/A')
     english = result['title'].get('english')
-    native = result['title']['native']
+    native = result['title'].get('native', 'N/A')
     episodes = result.get('episodes', 'N/A')
     status = result.get('status', 'N/A')
     score = result.get('averageScore', 'N/A')
     desc = clean_description(result.get('description'))
-    image = result['coverImage']['large']
-    site_url = result['siteUrl']
+    image = result['coverImage'].get('large', '')
+    site_url = result.get('siteUrl', '')
 
-    # Optional character and sequel buttons
+    # Optional links
     character_url = None
     sequel_url = None
 
     if result.get("characters", {}).get("edges"):
-        character_url = result["characters"]["edges"][0]["node"]["siteUrl"]
+        character_url = result["characters"]["edges"][0]["node"].get("siteUrl")
 
     for rel in result.get("relations", {}).get("edges", []):
         if rel["relationType"] == "SEQUEL":
-            sequel_url = rel["node"]["siteUrl"]
+            sequel_url = rel["node"].get("siteUrl")
             break
 
-    # Description in mono
+    # Format description
     short_desc = desc[:800] + "..." if len(desc) > 800 else desc
-    short_desc = f"`{short_desc}`"  # monospaced description
+    short_desc = f"`{short_desc}`"
 
-    english_line = f"**🇺🇸 Title (English):** `{english}`\n" if english else ""
+    english_line = f"🇺🇸 Title (English):`{english}`\n" if english else ""
 
     caption = (
-        f"🎌 **Title (Romaji):** `{title}`\n"
+        f"🎌Title (Romaji):`{title}`\n"
         f"{english_line}"
-        f"🈶 **Title (Native):** `{native}`\n"
-        f"📺 **Episodes:** `{episodes}`\n"
-        f"📊 **Score:** `{score}/100`\n"
-        f"📌 **Status:** `{status}`\n\n"
-        f"📝 **Description:**\n{short_desc}"
+        f"🈶 Title (Native):`{native}`\n"
+        f"📺 Episodes:`{episodes}`\n"
+        f"📊 Score:`{score}/100`\n"
+        f"📌 Status:`{status}`\n\n"
+        f"📝 Description:\n{short_desc}"
     )
 
-    buttons = [
-        [
-            InlineKeyboardButton("Description", url=site_url),
-            InlineKeyboardButton("Characters", url=character_url) if character_url else InlineKeyboardButton("👤 Characters", callback_data="no_characters"),
-        ],
-        [
-            InlineKeyboardButton("Series List", url=site_url),
-            InlineKeyboardButton("Sequel", url=sequel_url) if sequel_url else InlineKeyboardButton("➡️ Sequel", callback_data="no_sequel"),
-        ]
-    ]
+    # Build buttons only if URLs exist
+    buttons = [[InlineKeyboardButton("View on Anilist", url=site_url)]]
+
+    if character_url:
+        buttons.append([InlineKeyboardButton("Characters", url=character_url)])
+
+    if sequel_url:
+        buttons.append([InlineKeyboardButton("Sequel", url=sequel_url)])
 
     await message.reply_photo(
         photo=image,
         caption=caption,
         parse_mode=ParseMode.MARKDOWN,
         reply_markup=InlineKeyboardMarkup(buttons)
-)
+    )
