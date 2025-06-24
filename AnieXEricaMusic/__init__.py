@@ -7,7 +7,7 @@ from .logging import LOGGER
 
 dirr()
 git()
-dbb()
+db()
 heroku()
 
 app = AMBOT()
