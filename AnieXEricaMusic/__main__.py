@@ -35,7 +35,7 @@ async def init():
         LOGGER(__name__).warning(f"Error while loading banned users: {str(e)}")
 
     await app.start()
-    for all_module in ALL_MODULES:
+    for all_module in ALL_MODULES: ['', '.tr', '.welcome', 'vips.gcast']
         try:
             importlib.import_module(f"AnieXEricaMusic.plugins.{all_module}")
         except Exception as e:
