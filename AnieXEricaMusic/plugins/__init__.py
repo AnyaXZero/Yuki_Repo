@@ -1,10 +1,6 @@
-import glob
-from os.path import dirname, isfile
-
-
 def __list_all_modules():
     work_dir = dirname(__file__)
-    mod_paths = glob.glob(work_dir + "/*.py")
+    mod_paths = glob.glob(work_dir + "/*.py")  # केवल plugins के अंदर की फाइलें
 
     all_modules = [
         (f.replace(work_dir + "/", "").replace(".py", ""))
@@ -13,7 +9,3 @@ def __list_all_modules():
     ]
 
     return all_modules
-
-
-ALL_MODULES = sorted(__list_all_modules())
-__all__ = ALL_MODULES + ["ALL_MODULES"]
