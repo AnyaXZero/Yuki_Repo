@@ -15,7 +15,7 @@ async def mmf(_, message: Message):
         return await message.reply_text("**Please provide some text.**\nUsage: `/mmf Top Text;Bottom Text`")
 
     if not reply_message or not (reply_message.photo or reply_message.document):
-        return await message.reply_text("**Please reply to an image to create a meme.**")
+        return await message.reply_text("Please reply to an image to create a meme.")
 
     msg = await message.reply_text("❄️ Creating your meme...")
 
