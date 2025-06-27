@@ -73,38 +73,34 @@ db = _WelDB()
 last_messages: dict[int, list] = {}
 
 # ─── IMAGE GENERATOR ───
-def _circle(im, size=(200, 200)):
+def _circle(im, size=(835, 839)):
     im = im.resize(size, Image.LANCZOS).convert("RGBA")
     mask = Image.new("L", size, 0)
     ImageDraw.Draw(mask).ellipse((0, 0, *size), fill=255)
     im.putalpha(mask)
     return im
 
-def draw_fit_text(draw, pos, text, max_width, font_path, start_size=40, fill=(255, 255, 255)):
+def draw_fit_text(draw, pos, text, max_width, font_path, start_size=65, fill=(242, 242, 242)):
     size = start_size
     font = ImageFont.truetype(font_path, size)
-    while font.getlength(text) > max_width and size > 20:
+    while font.getlength(text) > max_width and size > 30:
         size -= 2
         font = ImageFont.truetype(font_path, size)
     draw.text(pos, text, font=font, fill=fill)
 
 def build_pic(av, fn, uid, un):
     bg = Image.open(BG_PATH).convert("RGBA")
-
     try:
         avatar = _circle(Image.open(av))
     except:
         avatar = _circle(Image.open(FALLBACK_PIC))
 
-    # Paste avatar into the circle on right side
-    bg.paste(avatar, (860, 160), avatar)
-
+    bg.paste(avatar, (1887, 390), avatar)
     draw = ImageDraw.Draw(bg)
 
-    # Draw text (Name, ID, Username) inside boxes
-    draw_fit_text(draw, (80, 240), fn or "Unknown", 400, FONT_PATH)
-    draw_fit_text(draw, (80, 340), str(uid), 400, FONT_PATH)
-    draw_fit_text(draw, (80, 440), f"@{un}" if un else "No Username", 400, FONT_PATH)
+    draw_fit_text(draw, (421, 715), fn or "Unknown", 1000, FONT_PATH)
+    draw_fit_text(draw, (270, 1005), str(uid),     1000, FONT_PATH)
+    draw_fit_text(draw, (570, 1308), f"@{un}" if un else "No Username", 1000, FONT_PATH)
 
     path = f"downloads/welcome_{uid}.png"
     bg.save(path)
