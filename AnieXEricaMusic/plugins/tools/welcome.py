@@ -10,7 +10,7 @@ from pyrogram.types import (
 from AnieXEricaMusic import app
 
 # ─── CONFIG ───
-BG_PATH      = "AnieXEricaMusic/assets/AnnieNwel.png"
+BG_PATH      = "AnieXEricaMusic/assets/AnnieNwel.jpg"
 FALLBACK_PIC = "AnieXEricaMusic/assets/upic.png"
 FONT_PATH    = "AnieXEricaMusic/assets/ArialReg.ttf"
 BTN_VIEW     = "๏ ᴠɪᴇᴡ ɴᴇᴡ ᴍᴇᴍʙᴇʀ ๏"
