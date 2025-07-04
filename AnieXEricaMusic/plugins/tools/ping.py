@@ -11,7 +11,7 @@ BOT_START_TIME = time.time()
 # Customize these
 SUPPORT_GROUP = "https://t.me/+C0s3qb7sRZA0ZjRk"
 SUPPORT_CHANNEL = "https://t.me/HutaoUpdates"
-PING_IMAGE_URL = "https://files.catbox.moe/c0ettb.jpg"  # Change if needed
+PING_IMAGE_URL = "https://i.ibb.co/9kfDK1F1/photo-2025-07-04-12-54-40-7523209387351998496.jpg"  # Change if needed
 
 @app.on_message(filters.command("ping"))
 async def ping(_, message: Message):
