@@ -57,14 +57,14 @@ autoclean = []
 confirmer = {}
 
 
-START_IMG_URL =  "https://files.catbox.moe/bhy0ks.jpg"
-PLAYLIST_IMG_URL = "https://files.catbox.moe/vyxlxz.jpg"
-STATS_IMG_URL = "https://files.catbox.moe/n1ltse.jpg"
-TELEGRAM_AUDIO_URL = "https://files.catbox.moe/ra02su.jpg"
-TELEGRAM_VIDEO_URL = "https://files.catbox.moe/fxt5ej.jpg"
-STREAM_IMG_URL = "https://files.catbox.moe/22ornp.jpg"
+START_IMG_URL =  "https://i.ibb.co/9H4qzF8y/photo-2025-07-04-12-57-42-7523210169036046352.jpg"
+PLAYLIST_IMG_URL = "https://i.ibb.co/8LdFNVJZ/photo-2025-07-04-12-55-08-7523209511906050056.jpg"
+STATS_IMG_URL = "https://i.ibb.co/svkYB8wq/photo-2025-07-04-12-56-14-7523209795373891604.jpg"
+TELEGRAM_AUDIO_URL = "https://i.ibb.co/6dcpT9j/photo-2025-07-04-12-53-06-7523208996509974548.jpg"
+TELEGRAM_VIDEO_URL = "https://i.ibb.co/wZbGhN4J/photo-2025-07-04-12-56-49-7523209980057485332.jpg"
+STREAM_IMG_URL = "https://i.ibb.co/0ySKjJzZ/photo-2025-07-04-12-55-45-7523209662229905432.jpg"
 SOUNCLOUD_IMG_URL = "https://files.catbox.moe/90o1js.jpg"
-YOUTUBE_IMG_URL = "https://files.catbox.moe/g20jh4.jpg"
+YOUTUBE_IMG_URL = ""https://i.ibb.co/9mhL1Mn5/photo-2025-07-04-12-58-12-7523210302180032520.jpg
 SPOTIFY_ARTIST_IMG_URL = "https://files.catbox.moe/2f7qbx.jpg"
 SPOTIFY_ALBUM_IMG_URL = "https://files.catbox.moe/y5hhpd.jpg"
 SPOTIFY_PLAYLIST_IMG_URL = "https://files.catbox.moe/ac40y5.jpg"
