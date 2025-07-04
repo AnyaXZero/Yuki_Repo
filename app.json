@@ -81,17 +81,17 @@
     },
     "START_IMG_URL": {
       "description": "Your Bot Start Time Pic tgm link from @Sophia_x_MusicBot on Telegram.",
-      "value": "https://files.catbox.moe/bhy0ks.jpg",
+      "value": "https://i.ibb.co/9H4qzF8y/photo-2025-07-04-12-57-42-7523210169036046352.jpg",
       "required": false
     },
     "PING_IMG_URL": {
       "description": "Your Bot Ping Check Time Pic tgm link from @Sophia_x_MusicBot on Telegram.",
-      "value": "https://files.catbox.moe/c0ettb.jpg",
+      "value": "https://i.ibb.co/9kfDK1F1/photo-2025-07-04-12-54-40-7523209387351998496.jpg",
       "required": false
     },
     "STATS_IMG_URL": {
       "description": "Your Bot Stats Time Pic tgm link from @Sophia_x_MusicBot on Telegram.",
-      "value": "https://files.catbox.moe/n1ltse.jpg",
+      "value": "https://i.ibb.co/svkYB8wq/photo-2025-07-04-12-56-14-7523209795373891604.jpg",
       "required": false
     },
     "LOGGER_ID": {
